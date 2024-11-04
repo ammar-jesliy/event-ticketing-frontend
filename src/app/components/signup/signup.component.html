@@ -1,21 +1,22 @@
 <div class="min-h-screen w-full flex items-center justify-center bg-gray-100">
   <div
-    class="w-[80%] max-w-[600px] flex items-center justify-center flex-col p-6 gap-14 rounded-xl shadow-2xl bg-white"
+    class="w-[80%] max-w-[800px] flex items-center justify-center flex-col p-6 gap-10 rounded-xl shadow-xl border-2 border-solid border-gray-200 bg-white my-10"
   >
-    <div class="flex flex-col items-center justify-center gap-4">
-        <p class="m-0 text-2xl font-semibold">Welcome</p>
-        <div class="flex gap-2">        
-            <p>Already have an account?</p>
-            <a routerLink="/login" class="">Login</a>
-        </div>
+    <div class="flex flex-col items-center justify-center gap-2">
+      <img src="logo.png" alt="" class="w-24 h-auto object-contain mb-4" />
+      <p class="m-0 text-[38px] font-semibold">Welcome</p>
+      <div class="flex gap-2">
+        <p class="font-medium">Already have an account?</p>
+        <a routerLink="/login" class="">Login</a>
+      </div>
     </div>
-    <div class="flex flex-col gap-8 w-full">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 w-full">
       <div class="flex flex-col gap-2">
         <label for="username" class="font-semibold">Username</label>
         <input
           pInputText
           id="username"
-          [(ngModel)]="username"
+          formControlName="username"
           placeholder="Username"
         />
       </div>
@@ -24,27 +25,42 @@
         <input
           pInputText
           id="email"
-          [(ngModel)]="email"
+          formControlName="email"
           placeholder="Email Address"
         />
+        <small *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" class="text-red-500">Enter a Valid Email</small>
+        <small *ngIf="signupForm.get('email')?.hasError('emailTaken')" class="text-red-500">This email is already taken</small>
       </div>
       <div class="flex flex-col gap-2">
         <label for="password" class="font-semibold">Password</label>
         <input
           id="password"
           type="password"
+          formControlName="password"
           placeholder="Password"
           pInputText
           class="w-full"
         />
+        <small *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="text-red-500">Password must be at least 6 characters</small>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="dropdown" class="font-semibold">Type of Account</label>
+        <p-dropdown
+          [options]="roles"
+          formControlName="role"
+          id="dropdown"
+          placeholder="Select Type of Account"
+          class="w-full flex"
+        />
       </div>
       <button
         pButton
-        pRipple
         label="Sign-Up"
         icon="pi pi-user"
         type="submit"
+        [loading]="loading"
+        [disabled]="signupForm.invalid || loading"
       ></button>
-    </div>
+    </form>
   </div>
 </div>
