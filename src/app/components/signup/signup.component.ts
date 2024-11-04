@@ -14,8 +14,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { CustomerService } from '../../services/customer.service';
+import { VendorService } from '../../services/vendor.service';
 
 @Component({
   selector: 'app-signup',
@@ -46,7 +47,8 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private vendorService: VendorService
   ) {}
 
   ngOnInit(): void {
@@ -63,13 +65,26 @@ export class SignupComponent implements OnInit {
   }
 
   emailValidator(control: FormControl): Observable<ValidationErrors | null> {
-    return this.customerService
-      .checkEmailAvailability(control.value)
-      .pipe(
-        map((isAvailable: boolean) =>
-          isAvailable ? null : { emailTaken: true }
-        )
-      );
+    const customerCheck$ = this.customerService.checkEmailAvailability(
+      control.value
+    );
+    const vendorCheck$ = this.vendorService.checkEmailAvailability(
+      control.value
+    );
+
+    return forkJoin([customerCheck$, vendorCheck$]).pipe(
+      map(([isCustomerAvailable, isVendorAvailable]) =>
+        isCustomerAvailable && isVendorAvailable ? null : { emailTaken: true }
+      )
+    );
+
+    // return this.customerService
+    //   .checkEmailAvailability(control.value)
+    //   .pipe(
+    //     map((isAvailable: boolean) =>
+    //       isAvailable ? null : { emailTaken: true }
+    //     )
+    //   );
   }
 
   onSubmit() {
