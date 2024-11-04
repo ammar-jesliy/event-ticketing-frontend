@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { User } from '../util/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,5 +13,9 @@ export class VendorService {
 
   checkEmailAvailability(email: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/check-email?email=${email}`)
+  }
+
+  registerVendor(vendor: User): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, vendor)
   }
 }

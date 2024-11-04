@@ -17,6 +17,8 @@ import { PasswordModule } from 'primeng/password';
 import { forkJoin, map, Observable } from 'rxjs';
 import { CustomerService } from '../../services/customer.service';
 import { VendorService } from '../../services/vendor.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { User } from '../../util/user';
 
 @Component({
   selector: 'app-signup',
@@ -91,16 +93,55 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.valid) {
       this.loading = true;
       const { username, email, password, role } = this.signupForm.value;
-      console.log('Role = ' + role);
-      console.log('Username = ' + username);
-      console.log('Email = ' + email);
-      console.log('Password = ' + password);
 
-      setTimeout(() => {
+      const user: User = {
+        name: username,
+        email: email,
+        password: password,
+      };
+
+      if (role === 'Customer') {
+        this.customerService.registerCustomer(user).subscribe({
+          next: (response) => {
+            this.loading = false;
+            alert('Customer Registration Successful');
+            this.signupForm.reset();
+          },
+          error: (error: HttpErrorResponse) => {
+            this.loading = false;
+            console.log(error.message);
+            alert('Failed to register customer');
+          },
+        });
+      } else if (role === 'Vendor') {
+        this.vendorService.registerVendor(user).subscribe({
+          next: (response) => {
+            this.loading = false;
+            alert('Vendor Registration Successful');
+            this.signupForm.reset();
+          },
+          error: (error: HttpErrorResponse) => {
+            this.loading = false;
+            console.log(error.message);
+            alert('Failed to register vendor');
+          },
+        });
+      } else {
         this.loading = false;
-        alert('Sign-up Successful');
+        alert('Unknown Error, Try Again');
         this.signupForm.reset();
-      });
+      }
+
+      // console.log('Role = ' + role);
+      // console.log('Username = ' + username);
+      // console.log('Email = ' + email);
+      // console.log('Password = ' + password);
+
+      // setTimeout(() => {
+      //   this.loading = false;
+      //   alert('Sign-up Successful');
+      //   this.signupForm.reset();
+      // });
     } else {
       this.signupForm.markAllAsTouched();
     }
