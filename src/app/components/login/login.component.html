@@ -1,1 +1,44 @@
-<p>login works!</p>
+<div class="min-h-screen w-full flex items-center justify-center bg-gray-100">
+    <div
+      class="w-[80%] max-w-[800px] flex items-center justify-center flex-col p-6 gap-10 rounded-xl shadow-xl border-2 border-solid border-gray-200 bg-white my-10"
+    >
+      <div class="flex flex-col items-center justify-center gap-2">
+        <img src="logo.png" alt="" class="w-24 h-auto object-contain mb-4" />
+        <p class="m-0 text-[38px] font-semibold">Welcome Back</p>
+        <div class="flex gap-2">
+          <p class="font-medium">Don't have an account?</p>
+          <a routerLink="/signup" class="">Sign-up</a>
+        </div>
+      </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 w-full">
+        <div class="flex flex-col gap-2">
+          <label for="email" class="font-semibold">Email</label>
+          <input
+            pInputText
+            id="email"
+            formControlName="email"
+            placeholder="Email Address"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="password" class="font-semibold">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Password"
+            pInputText
+            class="w-full"
+          />
+        </div>
+        <button
+          pButton
+          label="Login"
+          icon="pi pi-user"
+          type="submit"
+          [loading]="loading"
+        ></button>
+      </form>
+    </div>
+  </div>
+  
