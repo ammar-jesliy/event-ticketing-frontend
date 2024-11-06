@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -37,7 +37,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
-    private vendorService: VendorService
+    private vendorService: VendorService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -63,8 +64,14 @@ export class LoginComponent implements OnInit {
           if (!isCustomer) {
             this.customerService.loginCustomer(email, password).subscribe({
               next: (response) => {
-                alert(response.message);
+                // Store user authentication status
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('userRole', response.role);
+
+                alert("Successfully logged in customer");
                 this.loginForm.reset();
+
+                this.router.navigate(['/dashboard'])
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);
@@ -74,8 +81,14 @@ export class LoginComponent implements OnInit {
           } else if (!isVendor) {
             this.vendorService.loginVendor(email, password).subscribe({
               next: (response) => {
-                alert(response.message);
-                this.loginForm.reset();
+               // Store user authentication status
+               localStorage.setItem('isAuthenticated', 'true');
+               localStorage.setItem('userRole', response.role);
+
+               alert("Successfully logged in Vendor");
+               this.loginForm.reset();
+
+               this.router.navigate(['/dashboard'])
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);

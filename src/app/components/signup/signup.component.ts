@@ -8,7 +8,7 @@ import {
   FormControl,
   ValidationErrors,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -50,7 +50,8 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
-    private vendorService: VendorService
+    private vendorService: VendorService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +107,7 @@ export class SignupComponent implements OnInit {
             this.loading = false;
             alert('Customer Registration Successful');
             this.signupForm.reset();
+            this.router.navigate(['/login']);
           },
           error: (error: HttpErrorResponse) => {
             this.loading = false;
@@ -119,6 +121,7 @@ export class SignupComponent implements OnInit {
             this.loading = false;
             alert('Vendor Registration Successful');
             this.signupForm.reset();
+            this.router.navigate(['/login']);
           },
           error: (error: HttpErrorResponse) => {
             this.loading = false;
