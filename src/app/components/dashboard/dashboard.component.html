@@ -1,2 +1,10 @@
-<p>dashboard works!</p>
-<button pButton (click)="logout()">Log out</button>
+<div class="flex w-full">
+  <app-sidemenu />
+  <div class="min-h-screen w-full">
+    <app-header />
+    <div class="max-h-[calc(100vh-65px)] overflow-auto">
+      <p>dashboard works!</p>
+      <div class="h-screen"></div>
+    </div>
+  </div>
+</div>

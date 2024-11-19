@@ -4,7 +4,7 @@ import { SidemenuComponent } from "../sidemenu/sidemenu.component";
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [SidemenuComponent],
+  imports: [],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

@@ -1,20 +1,114 @@
-<div class="flex w-full"></div>
-
-
-<!-- <div class="flex justify-start">
-  <p-sidebar #sidebarRef [(visible)]="sidemenuVisible" styleClass="rounded-xl m-2 h-[calc(100%-16px)] p-2">
-    <ng-template pTemplate="headless">
+<div
+  class="h-screen w-[250px] border-r-2 border-solid border-l-0 border-t-0 border-b-0 border-gray-300 p-4 flex flex-col justify-between"
+>
+  <div class="flex flex-col gap-10 pt-4">
+    <div class="flex items-center gap-4">
+      <img src="logo.png" alt="" class="w-16 h-auto object-contain" />
+      <p class="text-3xl font-semibold">Tickets</p>
+    </div>
+    <div class="flex flex-col gap-4">
       <div>
-        <h3>Sidebar</h3>
-        <p-button (onClick)="closeCallback($event)" icon="pi pi-times" />
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-all"
+        >
+          <i
+            class="pi pi-objects-column transition-all"
+            [ngClass]="{
+              'text-blue-500': isActive('/dashboard'),
+              'text-gray-500': !isActive('/dashboard')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/dashboard'),
+              'text-gray-500': !isActive('/dashboard')
+            }"
+            class="transition-all"
+          >
+            Dashboard
+          </p>
+        </a>
       </div>
-    </ng-template>
-  </p-sidebar>
-  <p-button (onClick)="sidemenuVisible = true" icon="pi pi-bars" ></p-button>
-</div> -->
+      <div>
+        <a
+          routerLink="/events"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-all"
+        >
+          <i
+            class="pi pi-calendar transition-all"
+            [ngClass]="{
+              'text-blue-500': isActive('/events'),
+              'text-gray-500': !isActive('/events')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/events'),
+              'text-gray-500': !isActive('/events')
+            }"
+            class="transition-all"
+          >
+            Events
+          </p>
+        </a>
+      </div>
+      <div>
+        <a
+          routerLink="/transactions"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-all"
+        >
+          <i
+            class="pi pi-money-bill transition-all"
+            [ngClass]="{
+              'text-blue-500': isActive('/transactions'),
+              'text-gray-500': !isActive('/transactions')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/transactions'),
+              'text-gray-500': !isActive('/transactions')
+            }"
+            class="transition-all"
+          >
+            Transactions
+          </p>
+        </a>
+      </div>
+      <div>
+        <a
+          routerLink="/profile"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-all"
+        >
+          <i
+            class="pi pi-user transition-all"
+            [ngClass]="{
+              'text-blue-500': isActive('/profile'),
+              'text-gray-500': !isActive('/profile')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/profile'),
+              'text-gray-500': !isActive('/profile')
+            }"
+            class="transition-all"
+          >
+            Profile
+          </p>
+        </a>
+      </div>
+    </div>
+  </div>
+  <button
+    pButton
+    icon="pi pi-sign-out"
+    label="Log Out"
+    (click)="logout()"
+  ></button>
+</div>
