@@ -13,21 +13,21 @@
         <a
           routerLink="/dashboard"
           routerLinkActive="text-blue-500"
-          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-all"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
         >
           <i
-            class="pi pi-objects-column transition-all"
+            class="pi pi-objects-column transition-none"
             [ngClass]="{
               'text-blue-500': isActive('/dashboard'),
-              'text-gray-500': !isActive('/dashboard')
+              'text-gray-400': !isActive('/dashboard')
             }"
           ></i>
           <p
             [ngClass]="{
               'text-black': isActive('/dashboard'),
-              'text-gray-500': !isActive('/dashboard')
+              'text-gray-400': !isActive('/dashboard')
             }"
-            class="transition-all"
+            class="transition-none"
           >
             Dashboard
           </p>
@@ -37,21 +37,21 @@
         <a
           routerLink="/events"
           routerLinkActive="text-blue-500"
-          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-all"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
         >
           <i
-            class="pi pi-calendar transition-all"
+            class="pi pi-calendar transition-none"
             [ngClass]="{
               'text-blue-500': isActive('/events'),
-              'text-gray-500': !isActive('/events')
+              'text-gray-400': !isActive('/events')
             }"
           ></i>
           <p
             [ngClass]="{
               'text-black': isActive('/events'),
-              'text-gray-500': !isActive('/events')
+              'text-gray-400': !isActive('/events')
             }"
-            class="transition-all"
+            class="transition-none"
           >
             Events
           </p>
@@ -61,21 +61,21 @@
         <a
           routerLink="/transactions"
           routerLinkActive="text-blue-500"
-          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-all"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
         >
           <i
-            class="pi pi-money-bill transition-all"
+            class="pi pi-money-bill transition-none"
             [ngClass]="{
               'text-blue-500': isActive('/transactions'),
-              'text-gray-500': !isActive('/transactions')
+              'text-gray-400': !isActive('/transactions')
             }"
           ></i>
           <p
             [ngClass]="{
               'text-black': isActive('/transactions'),
-              'text-gray-500': !isActive('/transactions')
+              'text-gray-400': !isActive('/transactions')
             }"
-            class="transition-all"
+            class="transition-none"
           >
             Transactions
           </p>
@@ -85,21 +85,21 @@
         <a
           routerLink="/profile"
           routerLinkActive="text-blue-500"
-          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-all"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
         >
           <i
-            class="pi pi-user transition-all"
+            class="pi pi-user transition-none"
             [ngClass]="{
               'text-blue-500': isActive('/profile'),
-              'text-gray-500': !isActive('/profile')
+              'text-gray-400': !isActive('/profile')
             }"
           ></i>
           <p
             [ngClass]="{
               'text-black': isActive('/profile'),
-              'text-gray-500': !isActive('/profile')
+              'text-gray-400': !isActive('/profile')
             }"
-            class="transition-all"
+            class="transition-none"
           >
             Profile
           </p>
