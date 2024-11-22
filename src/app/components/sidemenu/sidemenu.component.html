@@ -59,6 +59,30 @@
       </div>
       <div>
         <a
+          routerLink="/sell-tickets"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
+        >
+          <i
+            class="pi pi-ticket transition-none"
+            [ngClass]="{
+              'text-blue-500': isActive('/sell-tickets'),
+              'text-gray-400': !isActive('/sell-tickets')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/sell-tickets'),
+              'text-gray-400': !isActive('/sell-tickets')
+            }"
+            class="transition-none"
+          >
+            Sell Tickets
+          </p>
+        </a>
+      </div>
+      <div>
+        <a
           routerLink="/transactions"
           routerLinkActive="text-blue-500"
           class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"

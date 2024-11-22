@@ -9,6 +9,8 @@ import { EventsComponent } from './components/events/events.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
+import { SellTicketsComponent } from './components/sell-tickets/sell-tickets.component';
+
 export const routes: Routes = [
     {path: '', component: HomeComponent},
     {path: 'login', component: LoginComponent},
@@ -17,5 +19,6 @@ export const routes: Routes = [
     {path: 'events', component: EventsComponent, canActivate: [authGuard]},
     {path: 'transactions', component: TransactionsComponent, canActivate: [authGuard]},
     {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
+    {path: 'sell-tickets', component: SellTicketsComponent, canActivate: [authGuard]},
     {path: '**', component: PageNotFoundComponent}
 ];
