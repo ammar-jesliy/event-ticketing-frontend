@@ -6,6 +6,8 @@ import { HomeTemplateComponent } from '../home-template/home-template.component'
 import { TooltipModule } from 'primeng/tooltip';
 import { VendorService } from '../../services/vendor.service';
 import { Vendor } from '../../util/vendor';
+import { Customer } from '../../util/customer';
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,13 +24,25 @@ import { Vendor } from '../../util/vendor';
 })
 export class DashboardComponent {
   vendorDetails: Signal<Vendor | null>;
+  customerDetails: Signal<Customer | null>;
 
-  constructor(private router: Router, private vendorService: VendorService) {
+  constructor(
+    private router: Router,
+    private vendorService: VendorService,
+    private customerService: CustomerService
+  ) {
     this.vendorDetails = this.vendorService.vendorDetails;
+    this.customerDetails = this.customerService.customerDetails;
   }
 
   ngOnInit() {
-    this.vendorService.loadVendorFromStorage();
+    const role = localStorage.getItem('userRole');
+
+    if (role === 'customer') {
+      this.customerService.loadCustomerFromStorage();
+    } else if (role === 'vendor') {
+      this.vendorService.loadVendorFromStorage();
+    }
   }
 
   logout() {

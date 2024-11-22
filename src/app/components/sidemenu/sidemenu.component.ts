@@ -12,7 +12,7 @@ import { Sidebar } from 'primeng/sidebar';
   standalone: true,
   imports: [ButtonModule, SidebarModule, RouterModule, CommonModule],
   templateUrl: './sidemenu.component.html',
-  styleUrl: './sidemenu.component.css'
+  styleUrl: './sidemenu.component.css',
 })
 export class SidemenuComponent {
   constructor(private router: Router) {}
@@ -22,12 +22,11 @@ export class SidemenuComponent {
   }
 
   logout() {
-    console.log("Logged Out")
+    console.log('Logged Out');
 
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("username");
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
 }

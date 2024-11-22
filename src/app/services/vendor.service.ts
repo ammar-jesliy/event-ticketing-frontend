@@ -41,10 +41,11 @@ export class VendorService {
   }
 
   loadVendorFromStorage() {
-    const vendorDetials = localStorage.getItem('user');
-    if (vendorDetials) {
-      this._vendorDetails.set(JSON.parse(vendorDetials));
+    const vendorDetails = localStorage.getItem('user');
+    if (vendorDetails) {
+      this._vendorDetails.set(JSON.parse(vendorDetails));
     }
+
   }
 
 }
