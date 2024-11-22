@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../util/user';
+import { Customer } from '../util/customer';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class CustomerService {
     return this.http.post(`${this.apiUrl}/register`, customer);
   }
 
-  loginCustomer(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { email, password });
+  loginCustomer(email: string, password: string): Observable<Customer> {
+    return this.http.post<Customer>(`${this.apiUrl}/login`, { email, password });
   }
 }

@@ -66,8 +66,9 @@ export class LoginComponent implements OnInit {
               next: (response) => {
                 // Store user authentication status
                 localStorage.setItem('isAuthenticated', 'true');
-                localStorage.setItem('userRole', response.role);
-                localStorage.setItem('userEmail', response.userEmail);
+                localStorage.setItem('userRole', 'customer');
+                localStorage.setItem('userEmail', response.email);
+                localStorage.setItem('username', response.name);
 
                 alert("Successfully logged in customer");
                 this.loginForm.reset();
