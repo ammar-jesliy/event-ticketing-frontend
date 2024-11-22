@@ -67,8 +67,7 @@ export class LoginComponent implements OnInit {
                 // Store user authentication status
                 localStorage.setItem('isAuthenticated', 'true');
                 localStorage.setItem('userRole', 'customer');
-                localStorage.setItem('userEmail', response.email);
-                localStorage.setItem('userEmail', response.name);
+                localStorage.setItem('user', JSON.stringify(response));
 
                 alert("Successfully logged in customer");
                 this.loginForm.reset();
@@ -86,7 +85,7 @@ export class LoginComponent implements OnInit {
                // Store user authentication status
                localStorage.setItem('isAuthenticated', 'true');
                localStorage.setItem('userRole', "vendor");
-               localStorage.setItem("vendor", JSON.stringify(response));
+               localStorage.setItem("user", JSON.stringify(response));
 
                alert("Successfully logged in Vendor");
                this.loginForm.reset();
