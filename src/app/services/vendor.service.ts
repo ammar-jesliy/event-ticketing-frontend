@@ -37,11 +37,11 @@ export class VendorService {
 
   saveUpdatedVendor(vendor: Vendor) {
     this._vendorDetails.set(vendor);
-    localStorage.setItem('vendor', JSON.stringify(vendor));
+    localStorage.setItem('user', JSON.stringify(vendor));
   }
 
   loadVendorFromStorage() {
-    const vendorDetials = localStorage.getItem('vendor');
+    const vendorDetials = localStorage.getItem('user');
     if (vendorDetials) {
       this._vendorDetails.set(JSON.parse(vendorDetials));
     }
