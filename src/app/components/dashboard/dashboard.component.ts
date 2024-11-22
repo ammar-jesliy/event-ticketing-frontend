@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { VendorService } from '../../services/vendor.service';
+import { Vendor } from '../../util/vendor';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +21,15 @@ import { TooltipModule } from 'primeng/tooltip';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
-  constructor(private router: Router) {}
+  vendorDetails: Signal<Vendor | null>;
+
+  constructor(private router: Router, private vendorService: VendorService) {
+    this.vendorDetails = this.vendorService.vendorDetails;
+  }
+
+  ngOnInit() {
+    this.vendorService.loadVendorFromStorage();
+  }
 
   logout() {
     console.log('Logged Out');

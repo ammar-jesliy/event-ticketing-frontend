@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../util/user';
 import { Vendor } from '../util/vendor';
@@ -9,6 +9,13 @@ import { Vendor } from '../util/vendor';
 })
 export class VendorService {
   private apiUrl = 'http://localhost:8080/api/v1/vendors';
+
+  private _vendorDetails = signal<Vendor | null>(null);
+
+  // To use the vendorDetails in other components, we need to create a getter method
+  get vendorDetails() {
+    return this._vendorDetails.asReadonly();
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -24,7 +31,20 @@ export class VendorService {
     return this.http.post<Vendor>(`${this.apiUrl}/login`, { email, password });
   }
 
-  getVendorProfile(): Observable<Vendor> {
-    return this.http.get<Vendor>(`${this.apiUrl}/profile?email=${localStorage.getItem('email')}`);
+  updateVendorProfile(vendor: Vendor): Observable<Vendor> {
+    return this.http.put<Vendor>(`${this.apiUrl}/update-profile`, vendor);
   }
+
+  saveUpdatedVendor(vendor: Vendor) {
+    this._vendorDetails.set(vendor);
+    localStorage.setItem('vendor', JSON.stringify(vendor));
+  }
+
+  loadVendorFromStorage() {
+    const vendorDetials = localStorage.getItem('vendor');
+    if (vendorDetials) {
+      this._vendorDetails.set(JSON.parse(vendorDetials));
+    }
+  }
+
 }
