@@ -26,6 +26,8 @@ export class SidemenuComponent {
 
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("userRole");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("username");
     this.router.navigate(['/login']);
   }
 }
