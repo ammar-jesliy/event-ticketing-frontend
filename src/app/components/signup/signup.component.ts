@@ -68,6 +68,17 @@ export class SignupComponent implements OnInit {
   }
 
   emailValidator(control: FormControl): Observable<ValidationErrors | null> {
+
+    // Deny the user to register using the admin email
+    const adminEmail = 'admin@admin.com';
+    if (control.value === adminEmail) {
+      return new Observable((observer) => {
+        observer.next({ emailTaken: true });
+        observer.complete();
+      });
+    }
+
+    // Check if the email is already taken by a customer or vendor
     const customerCheck$ = this.customerService.checkEmailAvailability(
       control.value
     );
