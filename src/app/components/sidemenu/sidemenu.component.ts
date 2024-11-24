@@ -15,6 +15,9 @@ import { Sidebar } from 'primeng/sidebar';
   styleUrl: './sidemenu.component.css',
 })
 export class SidemenuComponent {
+
+  role: string = localStorage.getItem('userRole') || '';
+
   constructor(private router: Router) {}
 
   isActive(route: string): boolean {

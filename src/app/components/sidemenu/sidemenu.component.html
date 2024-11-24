@@ -33,7 +33,7 @@
           </p>
         </a>
       </div>
-      <div>
+      <div *ngIf="role === 'admin'">
         <a
           routerLink="/events"
           routerLinkActive="text-blue-500"
@@ -57,7 +57,7 @@
           </p>
         </a>
       </div>
-      <div>
+      <div *ngIf="role === 'vendor'">
         <a
           routerLink="/sell-tickets"
           routerLinkActive="text-blue-500"
@@ -78,6 +78,30 @@
             class="transition-none"
           >
             Sell Tickets
+          </p>
+        </a>
+      </div>
+      <div *ngIf="role === 'customer'">
+        <a
+          routerLink="/buy-tickets"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
+        >
+          <i
+            class="pi pi-ticket transition-none"
+            [ngClass]="{
+              'text-blue-500': isActive('/buy-tickets'),
+              'text-gray-400': !isActive('/buy-tickets')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/buy-tickets'),
+              'text-gray-400': !isActive('/buy-tickets')
+            }"
+            class="transition-none"
+          >
+            Buy Tickets
           </p>
         </a>
       </div>
@@ -105,7 +129,55 @@
           </p>
         </a>
       </div>
-      <div>
+      <div *ngIf="role === 'admin'">
+        <a
+          routerLink="/configure"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
+        >
+          <i
+            class="pi pi-sliders-h transition-none"
+            [ngClass]="{
+              'text-blue-500': isActive('/configure'),
+              'text-gray-400': !isActive('/configure')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/configure'),
+              'text-gray-400': !isActive('/configure')
+            }"
+            class="transition-none"
+          >
+            Configure
+          </p>
+        </a>
+      </div>
+      <div *ngIf="role === 'admin'">
+        <a
+          routerLink="/manage-users"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
+        >
+          <i
+            class="pi pi-users transition-none"
+            [ngClass]="{
+              'text-blue-500': isActive('/manage-users'),
+              'text-gray-400': !isActive('/manage-users')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/manage-users'),
+              'text-gray-400': !isActive('/manage-users')
+            }"
+            class="transition-none"
+          >
+            Manage Users
+          </p>
+        </a>
+      </div>
+      <div *ngIf="role === 'customer' || role === 'vendor'">
         <a
           routerLink="/profile"
           routerLinkActive="text-blue-500"
