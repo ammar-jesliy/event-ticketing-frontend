@@ -10,15 +10,45 @@ import { TransactionsComponent } from './components/transactions/transactions.co
 import { ProfileComponent } from './components/profile/profile.component';
 
 import { SellTicketsComponent } from './components/sell-tickets/sell-tickets.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 
 export const routes: Routes = [
-    {path: '', component: HomeComponent},
-    {path: 'login', component: LoginComponent},
-    {path: 'signup', component: SignupComponent},
-    {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
-    {path: 'events', component: EventsComponent, canActivate: [authGuard]},
-    {path: 'transactions', component: TransactionsComponent, canActivate: [authGuard]},
-    {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
-    {path: 'sell-tickets', component: SellTicketsComponent, canActivate: [authGuard]},
-    {path: '**', component: PageNotFoundComponent}
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+    data: { allowedRoles: ['customer', 'vendor'] },
+  },
+  {
+    path: 'events',
+    component: EventsComponent,
+    canActivate: [authGuard],
+    data: { allowedRoles: ['admin'] },
+  },
+  {
+    path: 'transactions',
+    component: TransactionsComponent,
+    canActivate: [authGuard],
+    data: { allowedRoles: ['customer', 'vendor'] },
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [authGuard],
+    data: { allowedRoles: ['customer', 'vendor'] },
+  },
+  {
+    path: 'sell-tickets',
+    component: SellTicketsComponent,
+    canActivate: [authGuard],
+    data: { allowedRoles: ['vendor'] },
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent,
+  },
+  { path: '**', component: PageNotFoundComponent },
 ];
