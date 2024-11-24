@@ -58,7 +58,12 @@ export class LoginComponent implements OnInit {
       const { email, password } = this.loginForm.value;
 
       // Check if the user is an admin
-      if (email === this.adminCredentials.email && password === this.adminCredentials.password) {
+      if (email === this.adminCredentials.email) {
+        if (password !== this.adminCredentials.password) {
+          this.loading = false;
+          alert('Invalid Credentials');
+          return;
+        }
         this.loading = false;
 
         // Store user authentication status
