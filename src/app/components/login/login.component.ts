@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         // Store user authentication status
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userRole', 'admin');
-        localStorage.setItem('user', JSON.stringify({ email: email }));
+        localStorage.setItem('user', JSON.stringify({ email: email, name: 'Admin' }));
 
         alert('Successfully logged in as admin');
         this.loginForm.reset();
