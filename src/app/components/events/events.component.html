@@ -1,39 +1,103 @@
 <app-home-template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-    <button class="min-w-[200px] h-[200px] bg-blue-400 rounded-lg flex items-center justify-center text-white border-none cursor-pointer">
-      <div class="flex flex-col items-center gap-2">
-        <i class="pi pi-plus"></i>
-        <p class="font-semibold font-poppins text-base">New Event</p>
-      </div>
-    </button>
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+  >
+    <div class="min-w-[200px] h-[200px]">
+      <button
+        class="h-full w-full bg-blue-400 rounded-lg flex items-center justify-center text-white border-none cursor-pointer"
+        (click)="formVisible = true"
+      >
+        <div class="flex flex-col items-center gap-2">
+          <i class="pi pi-plus"></i>
+          <p class="font-semibold font-poppins text-base">New Event</p>
+        </div>
+      </button>
+      <p-dialog
+        header="Create New Event"
+        [modal]="true"
+        [(visible)]="formVisible"
+        [style]="{ width: '35rem' }"
+      >
+        <span class="block mb-5 font-poppins">
+          Enter the details for the new event.
+        </span>
+        <div class="flex flex-col justify-center gap-2 mb-5">
+          <label for="eventName" class="font-semibold font-poppins">
+            Event Name
+          </label>
+          <input
+            pInputText
+            id="eventName"
+            class="flex-auto"
+            autocomplete="off"
+          />
+        </div>
+        <div class="flex flex-col justify-center gap-2 mb-5">
+          <label for="description" class="font-semibold">Description</label>
+          <textarea
+            name="description"
+            id="description"
+            rows="3"
+            pInputTextarea
+            [autoResize]="true"
+            class="min-h-[80px] max-h-[200px]"
+          >
+          </textarea>
+        </div>
+        <div class="flex gap-5">
+          <div
+            class="flex flex-col justify-center w-[calc(50%-10px)] gap-2 mb-5"
+          >
+            <label for="date" class="font-semibold">Date</label>
+            <input
+              type="date"
+              name=""
+              id="date"
+              class="h-[50px] font-poppins p-3 rounded-md border-solid border-gray-300 border-[1px] text-black/70"
+            />
+          </div>
+          <div
+            class="flex flex-col justify-center w-[calc(50%-10px)] gap-2 mb-5"
+          >
+            <label for="location" class="font-semibold">Location</label>
+            <input pInputText id="location" class="flex-1" autocomplete="off" />
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div
+            class="flex flex-col justify-center w-[calc(50%-10px)] gap-2 mb-5"
+          >
+            <label for="max-capacity" class="font-semibold">Max Capacity</label>
+            <p-inputNumber
+              inputId="capacity"
+              class="flex-1"
+              mode="decimal"
+              [min]="1"
+              [max]="500000"
+            />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            class="font-normal rounded-xl"
+            severity="secondary"
+            (click)="formVisible = false"
+          >Cancel</button>
+          <button
+            pButton
+            class="font-normal rounded-xl"
+            (click)="formVisible = false"
+          >Save</button>
+        </div>
+      </p-dialog>
+    </div>
 
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    <button class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer">
-
-    </button>
-    
+    <button
+      class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer"
+    ></button>
+    <button
+      class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer"
+    ></button>
   </div>
 </app-home-template>
