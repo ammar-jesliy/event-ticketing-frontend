@@ -1,15 +1,13 @@
 <app-home-template>
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-  >
-    <div class="min-w-[200px] h-[200px]">
+  <div class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min">
+    <div class="">
       <button
-        class="h-full w-full bg-blue-400 rounded-lg flex items-center justify-center text-white border-none cursor-pointer"
+        class="p-4 bg-blue-400 rounded-md flex items-center justify-center text-white border-none cursor-pointer"
         (click)="formVisible = true"
       >
-        <div class="flex flex-col items-center gap-2">
+        <div class="flex items-center gap-2">
           <i class="pi pi-plus"></i>
-          <p class="font-semibold font-poppins text-base">New Event</p>
+          <p class="font-medium font-poppins text-sm">New Event</p>
         </div>
       </button>
       <p-dialog
@@ -97,65 +95,74 @@
       </p-dialog>
     </div>
 
-    <!-- <button
-      class="min-w-[200px] h-[200px] bg-gray-300 rounded-lg border-none cursor-pointer"
-    ></button> -->
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-        <tr>
-          <th
-            scope="col"
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Event Name
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Description
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Date
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Location
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Max Capacity
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let event of allEvents()">
-          <td
-            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-          >
+    <div class="min-w-[1000px]">
+      <div
+        class="grid grid-cols-5 gap-4 bg-gray-50 border border-gray-300 border-solid rounded-t-lg"
+      >
+        <div
+          class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider p-4 border-r border-solid border-y-0 border-l-0 border-gray-300"
+        >
+          Event Name
+        </div>
+        <div
+          class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider p-4 border-r border-solid border-y-0 border-l-0 border-gray-300"
+        >
+          Description
+        </div>
+        <div
+          class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider p-4 border-r border-solid border-y-0 border-l-0 border-gray-300"
+        >
+          Date
+        </div>
+        <div
+          class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider p-4 border-r border-solid border-y-0 border-l-0 border-gray-300"
+        >
+          Location
+        </div>
+        <div
+          class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider p-4"
+        >
+          Max Capacity
+        </div>
+      </div>
+      <div
+        *ngFor="let event of allEvents()"
+        class="grid grid-cols-5 gap-4 bg-white border-b border-solid border-t-0 border-x border-gray-300"
+      >
+        <div
+          class="text-sm font-medium text-gray-900 p-4 border-r border-solid border-y-0 border-l-0 border-gray-300"
+        >
+          <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{ event.name }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          </p>
+        </div>
+        <div
+          class="text-sm text-gray-500 p-4 border-r border-solid border-y-0 border-l-0 border-gray-300"
+        >
+          <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{ event.description }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          </p>
+        </div>
+        <div
+          class="text-sm text-gray-500 p-4 border-r border-solid border-y-0 border-l-0 border-gray-300"
+        >
+          <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{ event.date | date }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          </p>
+        </div>
+        <div
+          class="text-sm text-gray-500 p-4 border-r border-solid border-y-0 border-l-0 border-gray-300"
+        >
+          <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{ event.location }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          </p>
+        </div>
+        <div class="text-sm text-gray-500 p-4">
+          <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{ event.maxCapacity }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </app-home-template>
