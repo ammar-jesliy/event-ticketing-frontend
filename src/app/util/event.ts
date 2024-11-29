@@ -7,5 +7,4 @@ export interface Event {
   closeDate: string;
   location: string;
   maxCapacity: number;
-  eventStatus?: string;
 }
