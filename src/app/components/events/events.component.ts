@@ -7,6 +7,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -55,7 +56,9 @@ export class EventsComponent implements OnInit {
     this.createEventForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      date: ['', [Validators.required]],
+      date: ['', [Validators.required, this.dateAfter('closeDate')]],
+      openDate: ['', Validators.required],
+      closeDate: ['', [Validators.required, this.dateAfter('openDate')]],
       location: ['', Validators.required],
       maxCapacity: [
         '',
@@ -66,6 +69,19 @@ export class EventsComponent implements OnInit {
     console.log(this.allEvents());
   }
 
+  dateAfter(compareTo: string) {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const formGroup = control.parent as FormGroup;
+      if (formGroup) {
+        const compareToControl = formGroup.controls[compareTo];
+        if (compareToControl && control.value <= compareToControl.value) {
+          return { dateAfter: true };
+        }
+      }
+      return null;
+    };
+  }
+
   showDialog() {
     this.formVisible = true;
     console.log('Show Dialog');
@@ -73,18 +89,29 @@ export class EventsComponent implements OnInit {
 
   onSubmit() {
     if (this.createEventForm.valid) {
-      const { name, description, date, location, maxCapacity } =
-        this.createEventForm.value;
+      const {
+        name,
+        description,
+        date,
+        openDate,
+        closeDate,
+        location,
+        maxCapacity,
+      } = this.createEventForm.value;
 
       const newDate = new Date(date);
+      const newOpenDate = new Date(openDate);
+      const newCloseDate = new Date(closeDate);
 
       const newEvent: Event = {
         name,
         description,
         date: newDate.toISOString(),
+        openDate: newOpenDate.toISOString(),
+        closeDate: newCloseDate.toISOString(),
         location,
         maxCapacity,
-      }
+      };
 
       this.eventService.createEvent(newEvent);
     }
