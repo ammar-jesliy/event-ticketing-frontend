@@ -23,4 +23,10 @@ export class EventService {
     });
   }
 
+  createEvent(event: Event) {
+    this.http.post<Event>(this.apiUrl, event).subscribe(() => {
+      this.fetchAllEvents();
+    });
+  }
+
 }
