@@ -16,6 +16,7 @@ import {
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Event } from '../../util/event';
 import { EventService } from '../../services/event.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-events',
@@ -30,6 +31,7 @@ import { EventService } from '../../services/event.service';
     CommonModule,
     ReactiveFormsModule,
     InputNumberModule,
+    TooltipModule,
   ],
   templateUrl: './events.component.html',
   styleUrl: './events.component.css',
@@ -38,11 +40,7 @@ export class EventsComponent implements OnInit {
   allEvents: Signal<Event[] | null>;
 
   createEventForm!: FormGroup;
-  nane: string = '';
-  description: string = '';
   date: Date | undefined;
-  location: string = '';
-  maxCapacity: number = 0;
 
   formVisible: boolean = false;
 
@@ -69,6 +67,7 @@ export class EventsComponent implements OnInit {
     console.log(this.allEvents());
   }
 
+  // Custom validator to check if the date is after a given date
   dateAfter(compareTo: string) {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const formGroup = control.parent as FormGroup;
@@ -82,9 +81,34 @@ export class EventsComponent implements OnInit {
     };
   }
 
-  showDialog() {
-    this.formVisible = true;
-    console.log('Show Dialog');
+  // Returns a color based on the status of the event
+  getStatusColor(startDate: string, endDate: string) {
+    const now = new Date().toISOString();
+    const start = new Date(startDate).toISOString();
+    const end = new Date(endDate).toISOString();
+
+    if (now < start) {
+      return 'bg-blue-500';
+    } else if (now >= start && now <= end) {
+      return 'bg-green-500';
+    } else {
+      return 'bg-red-500';
+    }
+  }
+
+  // Returns the status text based on the status of the event
+  getStatus(startDate: string, endDate: string) {
+    const now = new Date().toISOString();
+    const start = new Date(startDate).toISOString();
+    const end = new Date(endDate).toISOString();
+
+    if (now < start) {
+      return 'Upcoming';
+    } else if (now >= start && now <= end) {
+      return 'Ongoing';
+    } else {
+      return 'Ended';
+    }
   }
 
   onSubmit() {
