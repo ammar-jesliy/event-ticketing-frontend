@@ -30,7 +30,7 @@ p {
 .grid-container {
   display: grid;
   grid-template-columns:
-    1fr /* Event Status */
+    70px /* Event Status */
     2fr /* Event Name */
     3fr /* Description (longer) */
     1.5fr /* Event Date */
