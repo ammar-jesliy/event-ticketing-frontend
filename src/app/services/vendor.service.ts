@@ -45,7 +45,24 @@ export class VendorService {
     if (vendorDetails) {
       this._vendorDetails.set(JSON.parse(vendorDetails));
     }
-
   }
 
+  releaseTicket(
+    eventId: string,
+    vendorId: string,
+    ticketPrice: number,
+    ticketQuantity: number
+  ) {
+    console.log('Release Ticket');
+    this.http
+      .post(`${this.apiUrl}/release-tickets`, {
+        eventId: eventId,
+        vendorId: vendorId,
+        numberOfTickets: ticketQuantity,
+        price: ticketPrice,
+      })
+      .subscribe(() => {
+        console.log('Tickets released');
+      });
+  }
 }
