@@ -7,6 +7,6 @@ export interface Transaction{
     eventId: string;
     quantity: number;
     pricePerTicket: number;
-    totalAmount?: number;
+    totalAmount: number;
     transactionType: string;
 }
