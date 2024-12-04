@@ -57,3 +57,17 @@ p {
   width: 100%;
   min-width: 1200px;
 }
+
+.grid-container-transactions {
+  display: grid;
+  grid-template-columns:
+    120px /* Transaction Type */
+    2fr /* Transaction Date */
+    2fr /* Event Name */
+    2fr /* Buyer Name */
+    1.5fr /* Number of Tickets */
+    1.5fr /* Price Per Ticket */
+    1.5fr; /* Total Transaction Amount */
+  width: 100%;
+  min-width: 1200px;
+}
