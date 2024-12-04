@@ -1,4 +1,4 @@
-import { Component, OnInit, Signal } from '@angular/core';
+import { Component, OnInit, signal, Signal } from '@angular/core';
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -15,6 +15,8 @@ import { Event } from '../../util/event';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { VendorService } from '../../services/vendor.service';
+import { Transaction } from '../../util/transaction';
+import { TransactionService } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-sell-tickets',
@@ -37,20 +39,26 @@ export class SellTicketsComponent implements OnInit {
 
   eventNames: Signal<string[] | null>;
   allEvents: Signal<Event[] | null>;
+  transactions: Signal<Transaction[] | null>;
 
   formVisible: boolean = false;
 
   constructor(
     private eventService: EventService,
     private vendorService: VendorService,
+    private transactionService: TransactionService,
     private fb: FormBuilder
   ) {
     this.eventNames = this.eventService.eventNames;
     this.allEvents = this.eventService.allEvents;
+    this.transactions = this.transactionService.vendorTransactions;
   }
 
   ngOnInit(): void {
     this.eventService.fetchAllEvents();
+    this.transactionService.fetchTransactionsByVendorId(
+      JSON.parse(localStorage.getItem('user') || '{}').id
+    );
 
     console.log('Event Names: ', this.eventNames());
 
@@ -98,5 +106,13 @@ export class SellTicketsComponent implements OnInit {
     } else {
       this.sellTicketsForm.markAllAsTouched();
     }
+  }
+
+  getEventName(eventId: string) {
+    return this.allEvents()?.find((event) => event.id === eventId)?.name || '';
+  }
+
+  getEventCloseDate(eventId: string) {
+    return this.allEvents()?.find((event) => event.id === eventId)?.closeDate || '';
   }
 }
