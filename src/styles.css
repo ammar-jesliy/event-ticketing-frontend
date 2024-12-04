@@ -41,3 +41,19 @@ p {
   width: 100%;
   min-width: 1200px;
 }
+
+
+.grid-container-sell-tickets {
+  display: grid;
+  grid-template-columns:
+    70px /* Status */
+    2fr /* Event Name */
+    1.5fr /* Tickets Released */
+    1.5fr /* Tickets Sold */
+    1.5fr /* Tickets Remaining */
+    2fr /* Ticket Release Date */
+    2fr /* Ticket Close Date */
+    2fr; /* Price per ticket */
+  width: 100%;
+  min-width: 1200px;
+}
