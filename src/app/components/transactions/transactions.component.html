@@ -92,9 +92,12 @@
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{
               userRole === "vendor"
-                ? transaction.customerId &&
-                  getCustomerName(transaction.customerId)
-                : transaction.vendorId && getVendorName(transaction.vendorId)
+                ? transaction.customerId
+                  ? getCustomerName(transaction.customerId)
+                  : "-"
+                : transaction.vendorId
+                ? getVendorName(transaction.vendorId)
+                : "-"
             }}
           </p>
         </div>
