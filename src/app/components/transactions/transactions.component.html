@@ -77,7 +77,7 @@
           class="overflow-hidden text-sm text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
-            {{ transaction.customerId || "-" }}
+            {{ transaction.customerId && getCustomerName(transaction.customerId || '') || "-" }}
           </p>
         </div>
         <div

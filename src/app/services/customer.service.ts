@@ -23,6 +23,10 @@ export class CustomerService {
     return this.http.get<boolean>(`${this.apiUrl}/check-email?email=${email}`);
   }
 
+  fetchCustomerById(customerId: string): Observable<Customer> {
+    return this.http.get<Customer>(`${this.apiUrl}/${customerId}`);
+  }
+
   registerCustomer(customer: User): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, customer);
   }
