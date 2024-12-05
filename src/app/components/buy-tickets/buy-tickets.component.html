@@ -1,3 +1,90 @@
 <app-home-template>
-  <p>buy-tickets works!</p>
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-5"
+  >
+    <button
+      class="h-[200px] rounded-xl border-none cursor-pointer bg-white shadow p-4 flex flex-col gap-2 justify-between"
+      *ngFor="let event of eventsWithTickets()"
+      (click)="onClick(event.id || '')"
+    >
+      <div class="flex flex-col w-full gap-2">
+        <div class="flex justify-between items-center w-full gap-2">
+          <p
+            class="font-semibold text-lg line-clamp-1 text-ellipsis tracking-tight"
+          >
+            {{ event.name }}
+          </p>
+          <p class="text-sm text-gray-500">
+            {{ event.date | date : "dd/MM/yyyy" }}
+          </p>
+        </div>
+        <p
+          class="text-sm text-gray-500 line-clamp-3 text-ellipsis leading-[1.1] mb-2 tracking-tight text-left"
+        >
+          {{ event.description }}
+        </p>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div class="flex gap-2 items-center">
+          <i class="pi pi-map-marker text-blue-500"></i>
+          <p
+            class="text-sm font-medium text-black line-clamp-1 text-ellipsis tracking-tight"
+          >
+            {{ event.location }}
+          </p>
+        </div>
+        <div class="flex gap-2 items-center mb-1">
+          <i class="pi pi-dollar text-blue-500"></i>
+          <p
+            class="text-sm font-medium text-black line-clamp-1 text-ellipsis tracking-tight"
+          >
+            {{
+              "Rs. " +
+                (event.id ? getLeastExpensiveTicketPrice(event.id) : "N/A") +
+                " - " +
+                "Rs. " +
+                (event.id ? getMostExpensiveTicketPrice(event.id) : "N/A")
+            }}
+          </p>
+        </div>
+      </div>
+    </button>
+    <p-dialog
+      header="Event Details"
+      [(visible)]="displayDialog"
+      [modal]="true"
+      [closable]="true"
+      [style]="{ width: '50vw' }"
+    >
+      <div *ngIf="selectedEvent">
+        <h2>{{ selectedEvent.name }}</h2>
+        <p>{{ selectedEvent.description }}</p>
+        <p>
+          <strong>Date:</strong> {{ selectedEvent.date | date : "dd/MM/yyyy" }}
+        </p>
+        <p><strong>Location:</strong> {{ selectedEvent.location }}</p>
+        <p>
+          <strong>Price Range:</strong> Rs.
+          {{ getLeastExpensiveTicketPrice(selectedEvent.id || "") }} - Rs.
+          {{ getMostExpensiveTicketPrice(selectedEvent.id || "") }}
+        </p>
+        <form [formGroup]="buyTicketForm" (ngSubmit)="onSubmit()">
+          <div class="p-field">
+            <label for="quantity">Quantity</label>
+            <input
+              id="quantity"
+              type="number"
+              pInputText
+              name="quantity"
+              min="1"
+              max="{{ getAvailableTickets(selectedEvent.id || '') }}"
+              required
+              formControlName="quantity"
+            />
+          </div>
+          <button type="submit" pButton label="Buy Tickets"></button>
+        </form>
+      </div>
+    </p-dialog>
+  </div>
 </app-home-template>
