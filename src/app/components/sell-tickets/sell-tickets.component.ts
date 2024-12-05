@@ -114,6 +114,14 @@ export class SellTicketsComponent implements OnInit {
     return this.allEvents()?.find((event) => event.id === eventId)?.name || '';
   }
 
+  getUnreleasedEventNames() {
+    const releasedEventIds = this.transactions()?.map(transaction => transaction.eventId) || [];
+    const ongoingEventNames = this.getOngoingEventNames();
+    return this.allEvents()
+      ?.filter(event => event.id && !releasedEventIds.includes(event.id) && ongoingEventNames.includes(event.name))
+      .map(event => event.name) || [];
+  }
+
   getEventCloseDate(eventId: string) {
     return (
       this.allEvents()?.find((event) => event.id === eventId)?.closeDate || ''
