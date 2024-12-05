@@ -16,7 +16,7 @@ import { EventService } from '../../services/event.service';
 })
 export class TransactionsComponent implements OnInit {
   allEvents: Signal<Event[] | null>;
-  vendorTransactions: Signal<Transaction[] | null>;
+  vendorTransactions: Signal<Transaction[] | []>;
 
   constructor(
     private transactionService: TransactionService,
@@ -35,5 +35,13 @@ export class TransactionsComponent implements OnInit {
 
   getEventName(eventId: string) {
     return this.allEvents()?.find((event) => event.id === eventId)?.name || '';
+  }
+
+  sortByDate(transactions: Transaction[]) {
+    return transactions.sort((a, b) => {
+      return (
+        new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime()
+      );
+    });
   }
 }
