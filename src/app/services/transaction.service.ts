@@ -10,6 +10,7 @@ export class TransactionService {
 
   private _allTransactions = signal<Transaction[]>([]);
   private _vendorTransactions = signal<Transaction[]>([]);
+  private _customerTransactions = signal<Transaction[]>([]);
 
   constructor(private http: HttpClient) {}
 
@@ -21,13 +22,15 @@ export class TransactionService {
     return this._vendorTransactions.asReadonly();
   }
 
+  get customerTransactions() {
+    return this._customerTransactions.asReadonly();
+  }
+
   fetchAllTransactions() {
-    this.http
-      .get<Transaction[]>(`${this.apiUrl}`)
-      .subscribe((transactions) => {
-        console.log('Fetched transactions: ', transactions);
-        this._allTransactions.set(transactions);
-      });
+    this.http.get<Transaction[]>(`${this.apiUrl}`).subscribe((transactions) => {
+      console.log('Fetched transactions: ', transactions);
+      this._allTransactions.set(transactions);
+    });
   }
 
   fetchTransactionsByVendorId(vendorId: string) {
@@ -36,6 +39,15 @@ export class TransactionService {
       .subscribe((transactions) => {
         console.log('Fetched vendor transactions: ', transactions);
         this._vendorTransactions.set(transactions);
+      });
+  }
+
+  fetchTransactionsByCustomerId(customerId: string) {
+    this.http
+      .get<Transaction[]>(`${this.apiUrl}/customer/${customerId}`)
+      .subscribe((transactions) => {
+        console.log('Fetched customer transactions: ', transactions);
+        this._customerTransactions.set(transactions);
       });
   }
 }
