@@ -114,28 +114,53 @@ export class SellTicketsComponent implements OnInit {
     return this.allEvents()?.find((event) => event.id === eventId)?.name || '';
   }
 
+  // Get all event names that are ongoing and have not been released once by the vendor yet
   getUnreleasedEventNames() {
-    const releasedEventIds = this.transactions()?.map(transaction => transaction.eventId) || [];
+    const releasedEventIds =
+      this.transactions()?.map((transaction) => transaction.eventId) || [];
     const ongoingEventNames = this.getOngoingEventNames();
-    return this.allEvents()
-      ?.filter(event => event.id && !releasedEventIds.includes(event.id) && ongoingEventNames.includes(event.name))
-      .map(event => event.name) || [];
+    return (
+      this.allEvents()
+        ?.filter(
+          (event) =>
+            event.id &&
+            !releasedEventIds.includes(event.id) &&
+            ongoingEventNames.includes(event.name)
+        )
+        .map((event) => event.name) || []
+    );
   }
 
+  // Get all transactions that are of type 'RELEASE'
+  getReleaseTransactions() {
+    return (
+      this.transactions()?.filter(
+        (transaction) => transaction.transactionType === 'RELEASE'
+      ) || []
+    );
+  }
+
+  // Get event close date by eventId
   getEventCloseDate(eventId: string) {
     return (
       this.allEvents()?.find((event) => event.id === eventId)?.closeDate || ''
     );
   }
 
+  // Sort transactions by event close date
   sortTransactionsByEventCloseDate(transactions: Transaction[]) {
     return transactions.sort((a, b) => {
-      const eventACloseDate = new Date(this.getEventCloseDate(a.eventId)).getTime();
-      const eventBCloseDate = new Date(this.getEventCloseDate(b.eventId)).getTime();
+      const eventACloseDate = new Date(
+        this.getEventCloseDate(a.eventId)
+      ).getTime();
+      const eventBCloseDate = new Date(
+        this.getEventCloseDate(b.eventId)
+      ).getTime();
       return eventBCloseDate - eventACloseDate;
     });
   }
 
+  // Get ongoing event names (events that are open and have not closed yet)
   getOngoingEventNames() {
     return (
       this.allEvents()
@@ -150,6 +175,7 @@ export class SellTicketsComponent implements OnInit {
     );
   }
 
+  // Get event status by eventId
   getEventStatus(eventId: string) {
     const currentDate = new Date().getTime();
     const event = this.allEvents()?.find((event) => event.id === eventId);
@@ -165,6 +191,7 @@ export class SellTicketsComponent implements OnInit {
     }
   }
 
+  // Get event status color by eventId
   getEventStatusColor(eventId: string) {
     const currentDate = new Date().getTime();
     const event = this.allEvents()?.find((event) => event.id === eventId);

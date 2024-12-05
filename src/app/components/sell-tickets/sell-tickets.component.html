@@ -1,5 +1,8 @@
 <app-home-template>
-  <div class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min" [ngClass]="{'items-center py-20': transactions()?.length === 0}">
+  <div
+    class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min"
+    [ngClass]="{ 'items-center py-20': transactions()?.length === 0 }"
+  >
     <div
       class="min-w-[1000px] flex flex-col items-center justify-center"
       *ngIf="transactions()?.length === 0"
@@ -9,7 +12,9 @@
         alt="No Tickets Released"
         class="w-[200px] h-auto object-contain"
       />
-      <p class="font-semibold w-[250px] text-center text-gray-500">No Tickets Released yet. Release tickets to get started.</p>
+      <p class="font-semibold w-[250px] text-center text-gray-500">
+        No Tickets Released yet. Release tickets to get started.
+      </p>
     </div>
     <div>
       <button
@@ -148,7 +153,7 @@
       <div
         *ngFor="
           let transaction of sortTransactionsByEventCloseDate(
-            transactions() || []
+            getReleaseTransactions() || []
           )
         "
         class="grid-container-sell-tickets bg-white border-b border-solid border-t-0 border-x border-gray-300"
