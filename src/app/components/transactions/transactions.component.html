@@ -1,6 +1,6 @@
 <app-home-template>
-  <div class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min">
-    <div class="min-w-[1000px]">
+  <div class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min items-center justify-center">
+    <div *ngIf="vendorTransactions().length > 0" class="min-w-[1000px]">
       <div
         class="grid-container-transactions bg-gray-50 border border-gray-300 border-solid rounded-t-lg"
       >
@@ -104,6 +104,16 @@
           </p>
         </div>
       </div>
+    </div>
+    <div
+      *ngIf="vendorTransactions().length === 0"
+      class="w-[1000px] flex flex-col items-center justify-center p-5 py-10">
+      <img
+        src="empty-transactions.png"
+        alt="No transactions found"
+        class="w-[200px] h-auto object-contain mb-4"
+      />
+      <p class="font-semibold text-gray-500">No transactions found </p>
     </div>
   </div>
 </app-home-template>

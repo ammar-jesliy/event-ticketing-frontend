@@ -1,11 +1,26 @@
 <app-home-template>
-  <div
-    class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min"
-  >
+  <div class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min" [ngClass]="{'items-center py-20': transactions()?.length === 0}">
+    <div
+      class="min-w-[1000px] flex flex-col items-center justify-center"
+      *ngIf="transactions()?.length === 0"
+    >
+      <img
+        src="empty-tickets.png"
+        alt="No Tickets Released"
+        class="w-[200px] h-auto object-contain"
+      />
+      <p class="font-semibold w-[250px] text-center text-gray-500">No Tickets Released yet. Release tickets to get started.</p>
+    </div>
     <div>
       <button
-        class="p-4 bg-blue-400 rounded-md flex items-center justify-center text-white border-none cursor-pointer"
+        class="p-4 bg-blue-500 rounded-md flex items-center justify-center text-white border-none cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed"
         (click)="formVisible = true"
+        [disabled]="getUnreleasedEventNames().length === 0"
+        pTooltip="{{
+          getUnreleasedEventNames().length === 0
+            ? 'No events to release tickets for'
+            : ''
+        }}"
       >
         <div class="flex items-center gap-2">
           <i class="pi pi-plus"></i>
@@ -87,7 +102,7 @@
       </p-dialog>
     </div>
 
-    <div class="min-w-[1000px]">
+    <div class="min-w-[1000px]" *ngIf="transactions()?.length !== 0">
       <div
         class="grid-container-sell-tickets bg-gray-50 border border-gray-300 border-solid rounded-t-lg"
       >
@@ -131,7 +146,11 @@
         </div>
       </div>
       <div
-        *ngFor="let transaction of sortTransactionsByEventCloseDate(transactions() || [])"
+        *ngFor="
+          let transaction of sortTransactionsByEventCloseDate(
+            transactions() || []
+          )
+        "
         class="grid-container-sell-tickets bg-white border-b border-solid border-t-0 border-x border-gray-300"
       >
         <div
@@ -139,9 +158,10 @@
           pTooltip="{{ getEventStatus(transaction.eventId) }}"
         >
           <div
-            class="w-10 h-3 rounded-full {{ getEventStatusColor(transaction.eventId) }}"
-          >
-          </div>
+            class="w-10 h-3 rounded-full {{
+              getEventStatusColor(transaction.eventId)
+            }}"
+          ></div>
         </div>
         <div
           class="overflow-hidden text-sm font-medium text-gray-900 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
