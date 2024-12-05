@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { VendorService } from '../../services/vendor.service';
 import { Transaction } from '../../util/transaction';
 import { TransactionService } from '../../services/transaction.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-sell-tickets',
@@ -30,6 +31,7 @@ import { TransactionService } from '../../services/transaction.service';
     InputNumberModule,
     ReactiveFormsModule,
     DropdownModule,
+    TooltipModule,
   ],
   templateUrl: './sell-tickets.component.html',
   styleUrl: './sell-tickets.component.css',
@@ -113,6 +115,60 @@ export class SellTicketsComponent implements OnInit {
   }
 
   getEventCloseDate(eventId: string) {
-    return this.allEvents()?.find((event) => event.id === eventId)?.closeDate || '';
+    return (
+      this.allEvents()?.find((event) => event.id === eventId)?.closeDate || ''
+    );
+  }
+
+  sortTransactionsByEventCloseDate(transactions: Transaction[]) {
+    return transactions.sort((a, b) => {
+      const eventACloseDate = new Date(this.getEventCloseDate(a.eventId)).getTime();
+      const eventBCloseDate = new Date(this.getEventCloseDate(b.eventId)).getTime();
+      return eventBCloseDate - eventACloseDate;
+    });
+  }
+
+  getOngoingEventNames() {
+    return (
+      this.allEvents()
+        ?.filter((event) => {
+          const currentDate = new Date().getTime();
+          return (
+            new Date(event.closeDate).getTime() > currentDate &&
+            new Date(event.openDate).getTime() <= currentDate
+          );
+        })
+        .map((event) => event.name) || []
+    );
+  }
+
+  getEventStatus(eventId: string) {
+    const currentDate = new Date().getTime();
+    const event = this.allEvents()?.find((event) => event.id === eventId);
+
+    if (!event) {
+      return '';
+    }
+
+    if (new Date(event.closeDate).getTime() < currentDate) {
+      return 'Closed';
+    } else {
+      return 'Ongoing';
+    }
+  }
+
+  getEventStatusColor(eventId: string) {
+    const currentDate = new Date().getTime();
+    const event = this.allEvents()?.find((event) => event.id === eventId);
+
+    if (!event) {
+      return '';
+    }
+
+    if (new Date(event.closeDate).getTime() < currentDate) {
+      return 'bg-red-500';
+    } else {
+      return 'bg-blue-500';
+    }
   }
 }

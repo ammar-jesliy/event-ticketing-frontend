@@ -29,7 +29,7 @@
             <p-dropdown
               class="w-full"
               panelStyleClass="w-full"
-              [options]="eventNames() || undefined"
+              [options]="getOngoingEventNames() || undefined"
               formControlName="eventName"
               placeholder="Select an event"
             />
@@ -131,16 +131,17 @@
         </div>
       </div>
       <div
-        *ngFor="let transaction of transactions()"
+        *ngFor="let transaction of sortTransactionsByEventCloseDate(transactions() || [])"
         class="grid-container-sell-tickets bg-white border-b border-solid border-t-0 border-x border-gray-300"
       >
         <div
           class="flex items-center justify-center gap-1 overflow-hidden text-sm font-medium text-gray-900 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
-          pTooltip=""
+          pTooltip="{{ getEventStatus(transaction.eventId) }}"
         >
           <div
-            class="w-10 h-3 rounded-full"
-          ></div>
+            class="w-10 h-3 rounded-full {{ getEventStatusColor(transaction.eventId) }}"
+          >
+          </div>
         </div>
         <div
           class="overflow-hidden text-sm font-medium text-gray-900 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
