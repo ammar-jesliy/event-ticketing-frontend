@@ -23,6 +23,10 @@ export class VendorService {
     return this.http.get<boolean>(`${this.apiUrl}/check-email?email=${email}`);
   }
 
+  fetchVendorById(vendorId: string): Observable<Vendor> {
+    return this.http.get<Vendor>(`${this.apiUrl}/${vendorId}`);
+  }
+
   registerVendor(vendor: User): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, vendor);
   }

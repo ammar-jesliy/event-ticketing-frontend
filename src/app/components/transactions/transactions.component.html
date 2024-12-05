@@ -1,6 +1,13 @@
 <app-home-template>
-  <div class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min items-center justify-center">
-    <div *ngIf="vendorTransactions().length > 0" class="min-w-[1000px]">
+  <div
+    class="flex flex-col gap-5 p-5 bg-white rounded-lg shadow-md min-w-min items-center justify-center"
+  >
+    <div
+      *ngIf="
+        vendorTransactions().length > 0 || customerTransactions().length > 0
+      "
+      class="min-w-[1000px]"
+    >
       <div
         class="grid-container-transactions bg-gray-50 border border-gray-300 border-solid rounded-t-lg"
       >
@@ -22,7 +29,7 @@
         <div
           class="text-left text-xs font-medium text-gray-500 uppercase p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
-          Customer Name
+          {{ userRole === "vendor" ? "Customer Name" : "Vendor Name" }}
         </div>
         <div
           class="text-left text-xs font-medium text-gray-500 uppercase p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
@@ -39,7 +46,13 @@
         </div>
       </div>
       <div
-        *ngFor="let transaction of sortByDate(vendorTransactions())"
+        *ngFor="
+          let transaction of sortByDate(
+            userRole === 'vendor'
+              ? vendorTransactions()
+              : customerTransactions()
+          )
+        "
         class="grid-container-transactions bg-white border-b border-solid border-t-0 border-x border-gray-300"
       >
         <div
@@ -63,7 +76,7 @@
           class="overflow-hidden text-sm font-medium text-gray-900 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
-            {{ transaction.timeStamp | date: 'medium' }}
+            {{ transaction.timeStamp | date : "medium" }}
           </p>
         </div>
         <div
@@ -77,7 +90,12 @@
           class="overflow-hidden text-sm text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
-            {{ transaction.customerId && getCustomerName(transaction.customerId || '') || "-" }}
+            {{
+              userRole === "vendor"
+                ? transaction.customerId &&
+                  getCustomerName(transaction.customerId)
+                : transaction.vendorId && getVendorName(transaction.vendorId)
+            }}
           </p>
         </div>
         <div
@@ -91,10 +109,10 @@
           class="overflow-hidden text-sm text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
-            {{ transaction.pricePerTicket.toFixed(2) }}
+            {{ "Rs. " + transaction.pricePerTicket.toFixed(2) }}
           </p>
         </div>
-        <div class="overflow-hidden text-sm text-gray-500 p-3">
+        <div class="overflow-hidden text-sm font-medium text-gray-900 p-3">
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{
               transaction.totalAmount && transaction.totalAmount > 0
@@ -106,14 +124,17 @@
       </div>
     </div>
     <div
-      *ngIf="vendorTransactions().length === 0"
-      class="w-[1000px] flex flex-col items-center justify-center p-5 py-10">
+      *ngIf="
+        vendorTransactions().length === 0 && customerTransactions().length === 0
+      "
+      class="w-[1000px] flex flex-col items-center justify-center p-5 py-10"
+    >
       <img
         src="empty-transactions.png"
         alt="No transactions found"
         class="w-[200px] h-auto object-contain mb-4"
       />
-      <p class="font-semibold text-gray-500">No transactions found </p>
+      <p class="font-semibold text-gray-500">No transactions found</p>
     </div>
   </div>
 </app-home-template>

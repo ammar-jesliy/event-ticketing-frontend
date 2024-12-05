@@ -7,7 +7,7 @@ import { Event } from '../../util/event';
 import { TransactionService } from '../../services/transaction.service';
 import { EventService } from '../../services/event.service';
 import { CustomerService } from '../../services/customer.service';
-import { Customer } from '../../util/customer';
+import { VendorService } from '../../services/vendor.service';
 
 @Component({
   selector: 'app-transactions',
@@ -17,47 +17,76 @@ import { Customer } from '../../util/customer';
   styleUrl: './transactions.component.css',
 })
 export class TransactionsComponent implements OnInit {
+  userRole: string = localStorage.getItem('userRole') || '';
+
   allEvents: Signal<Event[] | null>;
   vendorTransactions: Signal<Transaction[] | []>;
+  customerTransactions: Signal<Transaction[] | []>;
   customerNameCache: Map<string, string> = new Map();
+  vendorNameCache: Map<string, string> = new Map();
 
   constructor(
+    private vendorService: VendorService,
     private transactionService: TransactionService,
     private eventService: EventService,
     private customerService: CustomerService
   ) {
     this.allEvents = this.eventService.allEvents;
     this.vendorTransactions = this.transactionService.vendorTransactions;
+    this.customerTransactions = this.transactionService.customerTransactions;
   }
 
   ngOnInit(): void {
+    // Fetch all events
     this.eventService.fetchAllEvents();
-    this.transactionService.fetchTransactionsByVendorId(
-      JSON.parse(localStorage.getItem('user') || '{}').id
-    );
+
+    // Fetch transactions based on user role
+    if (this.userRole === 'vendor') {
+      this.transactionService.fetchTransactionsByVendorId(
+        JSON.parse(localStorage.getItem('user') || '{}').id
+      );
+    } else if (this.userRole === 'customer') {
+      this.transactionService.fetchTransactionsByCustomerId(
+        JSON.parse(localStorage.getItem('user') || '{}').id
+      );
+    }
   }
 
+  // Get event name by eventId
   getEventName(eventId: string) {
     return this.allEvents()?.find((event) => event.id === eventId)?.name || '';
   }
 
+  // Sort transactions by date in ascending order
   sortByDate(transactions: Transaction[]) {
     return transactions.sort((a, b) => {
-      return (
-        new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime()
-      );
+      return new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime();
     });
   }
 
+  // Get customer name by customerId
   getCustomerName(customerId: string) {
     if (this.customerNameCache.has(customerId)) {
       return this.customerNameCache.get(customerId)!;
     }
-  
+
     this.customerService.fetchCustomerById(customerId).subscribe((customer) => {
       this.customerNameCache.set(customerId, customer.name);
     });
-  
+
+    return 'Loading...'; // Placeholder text while fetching
+  }
+
+  // Get vendor name by vendorId
+  getVendorName(vendorId: string) {
+    if (this.vendorNameCache.has(vendorId)) {
+      return this.vendorNameCache.get(vendorId)!;
+    }
+
+    this.vendorService.fetchVendorById(vendorId).subscribe((vendor) => {
+      this.vendorNameCache.set(vendorId, vendor.name);
+    });
+
     return 'Loading...'; // Placeholder text while fetching
   }
 }
