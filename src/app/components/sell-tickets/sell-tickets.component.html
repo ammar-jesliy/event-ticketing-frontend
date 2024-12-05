@@ -186,14 +186,16 @@
           class="overflow-hidden text-sm text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
-            {{ 0 }}
+            {{ getSoldTicketsCount(transaction.eventId) }}
           </p>
         </div>
         <div
           class="overflow-hidden text-sm text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
-            {{ 0 }}
+            {{
+              transaction.quantity - getSoldTicketsCount(transaction.eventId)
+            }}
           </p>
         </div>
         <div

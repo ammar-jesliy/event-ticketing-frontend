@@ -18,6 +18,8 @@ import { VendorService } from '../../services/vendor.service';
 import { Transaction } from '../../util/transaction';
 import { TransactionService } from '../../services/transaction.service';
 import { TooltipModule } from 'primeng/tooltip';
+import { Ticket } from '../../util/ticket';
+import { TicketService } from '../../services/ticket.service';
 
 @Component({
   selector: 'app-sell-tickets',
@@ -42,6 +44,7 @@ export class SellTicketsComponent implements OnInit {
   eventNames: Signal<string[] | null>;
   allEvents: Signal<Event[] | null>;
   transactions: Signal<Transaction[] | null>;
+  tickets: Signal<Ticket[] | null>;
 
   formVisible: boolean = false;
 
@@ -49,18 +52,21 @@ export class SellTicketsComponent implements OnInit {
     private eventService: EventService,
     private vendorService: VendorService,
     private transactionService: TransactionService,
+    private ticketService: TicketService,
     private fb: FormBuilder
   ) {
     this.eventNames = this.eventService.eventNames;
     this.allEvents = this.eventService.allEvents;
     this.transactions = this.transactionService.vendorTransactions;
+    this.tickets = this.ticketService.vendorTickets;
   }
 
   ngOnInit(): void {
+    const vendorId = JSON.parse(localStorage.getItem('user') || '{}').id;
+
     this.eventService.fetchAllEvents();
-    this.transactionService.fetchTransactionsByVendorId(
-      JSON.parse(localStorage.getItem('user') || '{}').id
-    );
+    this.transactionService.fetchTransactionsByVendorId(vendorId);
+    this.ticketService.fetchTicketsByVendorId(vendorId);
 
     console.log('Event Names: ', this.eventNames());
 
@@ -205,5 +211,14 @@ export class SellTicketsComponent implements OnInit {
     } else {
       return 'bg-blue-500';
     }
+  }
+
+  // Get the total number of tickets with isAvailable = false for a given eventId
+  getSoldTicketsCount(eventId: string): number {
+    return (
+      this.tickets()?.filter(
+        (ticket) => ticket.eventId === eventId && !ticket.available
+      ).length || 0
+    );
   }
 }
