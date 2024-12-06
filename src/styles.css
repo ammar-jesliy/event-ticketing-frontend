@@ -91,7 +91,7 @@ p {
   display: grid;
   grid-template-columns:
     4fr /* User */
-    2fr /* User Type */
+    1fr /* User Type */
     2fr /* Vendor Name */
     60px; /* Customer Name */
   width: 100%;
