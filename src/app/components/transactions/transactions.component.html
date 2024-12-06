@@ -4,12 +4,15 @@
   >
     <div
       *ngIf="
-        vendorTransactions().length > 0 || customerTransactions().length > 0
+        vendorTransactions().length > 0 ||
+        customerTransactions().length > 0 ||
+        allTransactions().length > 0
       "
       class="min-w-[1000px]"
     >
       <div
         class="grid-container-transactions bg-gray-50 border border-gray-300 border-solid rounded-t-lg"
+        [ngClass]="{ 'grid-container-transactions-admin': userRole === 'admin' }"
       >
         <div
           class="text-left text-xs font-medium text-gray-500 uppercase p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
@@ -33,6 +36,12 @@
         </div>
         <div
           class="text-left text-xs font-medium text-gray-500 uppercase p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
+          *ngIf="userRole === 'admin'"
+        >
+          Customer Name
+        </div>
+        <div
+          class="text-left text-xs font-medium text-gray-500 uppercase p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
           Number of Tickets
         </div>
@@ -50,10 +59,13 @@
           let transaction of sortByDate(
             userRole === 'vendor'
               ? vendorTransactions()
-              : customerTransactions()
+              : userRole === 'customer'
+              ? customerTransactions()
+              : allTransactions()
           )
         "
         class="grid-container-transactions bg-white border-b border-solid border-t-0 border-x border-gray-300"
+        [ngClass]="{ 'grid-container-transactions-admin': userRole === 'admin' }"
       >
         <div
           class="overflow-hidden text-sm text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
@@ -103,6 +115,14 @@
         </div>
         <div
           class="overflow-hidden text-sm text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
+          *ngIf="userRole === 'admin'"
+        >
+          <p class="text-ellipsis line-clamp-1 overflow-hidden">
+            {{ transaction.customerId ? getCustomerName(transaction.customerId) : "-" }}
+          </p>
+        </div>
+        <div
+          class="overflow-hidden text-sm text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300"
         >
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{ transaction.quantity }}
@@ -128,7 +148,7 @@
     </div>
     <div
       *ngIf="
-        vendorTransactions().length === 0 && customerTransactions().length === 0
+        vendorTransactions().length === 0 && customerTransactions().length === 0 && allTransactions().length === 0
       "
       class="w-[1000px] flex flex-col items-center justify-center p-5 py-10"
     >

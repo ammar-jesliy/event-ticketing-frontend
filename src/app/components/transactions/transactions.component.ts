@@ -20,6 +20,7 @@ export class TransactionsComponent implements OnInit {
   userRole: string = localStorage.getItem('userRole') || '';
 
   allEvents: Signal<Event[] | null>;
+  allTransactions: Signal<Transaction[] | []>;
   vendorTransactions: Signal<Transaction[] | []>;
   customerTransactions: Signal<Transaction[] | []>;
   customerNameCache: Map<string, string> = new Map();
@@ -32,6 +33,7 @@ export class TransactionsComponent implements OnInit {
     private customerService: CustomerService
   ) {
     this.allEvents = this.eventService.allEvents;
+    this.allTransactions = this.transactionService.allTransactions;
     this.vendorTransactions = this.transactionService.vendorTransactions;
     this.customerTransactions = this.transactionService.customerTransactions;
   }
@@ -49,6 +51,8 @@ export class TransactionsComponent implements OnInit {
       this.transactionService.fetchTransactionsByCustomerId(
         JSON.parse(localStorage.getItem('user') || '{}').id
       );
+    } else if (this.userRole === 'admin') {
+      this.transactionService.fetchAllTransactions();
     }
   }
 
@@ -59,6 +63,7 @@ export class TransactionsComponent implements OnInit {
 
   // Sort transactions by date in ascending order
   sortByDate(transactions: Transaction[]) {
+    console.log('Sorting transactions by date: ', transactions);
     return transactions.sort((a, b) => {
       return new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime();
     });
