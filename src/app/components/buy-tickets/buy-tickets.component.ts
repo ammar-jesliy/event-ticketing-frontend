@@ -120,7 +120,7 @@ export class BuyTicketsComponent implements OnInit {
   // Get most expensive ticket price of a given event
   getMostExpensiveTicketPrice(eventId: string): number | undefined {
     const mostExpensiveTicket = this.allTickets()
-      ?.filter((ticket) => ticket.eventId === eventId)
+      ?.filter((ticket) => ticket.eventId === eventId && ticket.available)
       .reduce((a, b) => (a.price > b.price ? a : b));
     return mostExpensiveTicket?.price;
   }
@@ -128,7 +128,7 @@ export class BuyTicketsComponent implements OnInit {
   // Get least expensive ticket price of a given event
   getLeastExpensiveTicketPrice(eventId: string): number | undefined {
     const leastExpensiveTicket = this.allTickets()
-      ?.filter((ticket) => ticket.eventId === eventId)
+      ?.filter((ticket) => ticket.eventId === eventId && ticket.available)
       .reduce((a, b) => (a.price < b.price ? a : b));
     return leastExpensiveTicket?.price;
   }
