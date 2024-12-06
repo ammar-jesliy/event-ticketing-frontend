@@ -17,6 +17,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CustomerService } from '../../services/customer.service';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-buy-tickets',
@@ -26,6 +27,7 @@ import { CustomerService } from '../../services/customer.service';
     CommonModule,
     DialogModule,
     InputTextModule,
+    InputNumberModule,
     ButtonModule,
     ReactiveFormsModule,
   ],
@@ -135,5 +137,44 @@ export class BuyTicketsComponent implements OnInit {
   getAvailableTickets(eventId: string): number {
     const ticketPool = this.ticketPoolCache.get(eventId);
     return ticketPool ? ticketPool.availableTickets : 0;
+  }
+
+  // Get total price of tickets by getting the quantity and eventId as parameters, calculate the total price by adding from the least expensive tickets in the ticketpool tickets
+  getTotalPrice(quantity: number, eventId: string): number {
+    const ticketPool = this.ticketPoolCache.get(eventId);
+    if (!ticketPool) {
+      return 0;
+    }
+
+    const tickets = ticketPool.tickets;
+    const leastExpensiveTickets = tickets.sort((a, b) => a.price - b.price);
+    return leastExpensiveTickets.slice(0, quantity).reduce((acc, ticket) => {
+      return acc + ticket.price;
+    }, 0);
+  }
+
+  // return the count of ticket prices grouped by price by taking quantity and eventId as parameters, return a string with the count then price, for example 2 x $10
+  getTicketPriceGroup(quantity: number, eventId: string): string {
+    const ticketPool = this.ticketPoolCache.get(eventId);
+    if (!ticketPool) {
+      return '';
+    }
+
+    const tickets = ticketPool.tickets;
+    const leastExpensiveTickets = tickets.sort((a, b) => a.price - b.price);
+    const ticketPrices = leastExpensiveTickets
+      .slice(0, quantity)
+      .reduce((acc, ticket) => {
+        if (acc[ticket.price]) {
+          acc[ticket.price]++;
+        } else {
+          acc[ticket.price] = 1;
+        }
+        return acc;
+      }, {} as { [key: number]: number });
+
+    return Object.keys(ticketPrices)
+      .map((price) => `${ticketPrices[Number(price)]} x Rs. ${price}`)
+      .join(', ');
   }
 }

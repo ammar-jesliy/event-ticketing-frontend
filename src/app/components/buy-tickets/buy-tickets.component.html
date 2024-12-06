@@ -54,35 +54,109 @@
       [(visible)]="displayDialog"
       [modal]="true"
       [closable]="true"
-      [style]="{ width: '50vw' }"
+      [style]="{ width: '35rem' }"
     >
-      <div *ngIf="selectedEvent">
-        <h2>{{ selectedEvent.name }}</h2>
-        <p>{{ selectedEvent.description }}</p>
-        <p>
-          <strong>Date:</strong> {{ selectedEvent.date | date : "dd/MM/yyyy" }}
-        </p>
-        <p><strong>Location:</strong> {{ selectedEvent.location }}</p>
-        <p>
-          <strong>Price Range:</strong> Rs.
-          {{ getLeastExpensiveTicketPrice(selectedEvent.id || "") }} - Rs.
-          {{ getMostExpensiveTicketPrice(selectedEvent.id || "") }}
-        </p>
-        <form [formGroup]="buyTicketForm" (ngSubmit)="onSubmit()">
-          <div class="p-field">
-            <label for="quantity">Quantity</label>
-            <input
+      <div *ngIf="selectedEvent" class="flex flex-col gap-5">
+        <div>
+          <div class="flex justify-between items-center">
+            <p class="text-2xl font-semibold text-black">
+              {{ selectedEvent.name }}
+            </p>
+            <p>
+              {{ selectedEvent.date | date : "dd/MM/yyyy" }}
+            </p>
+          </div>
+          <p>{{ selectedEvent.description }}</p>
+        </div>
+        <div class="flex flex-col gap-3">
+          <div>
+            <p class="text-black font-semibold">Location</p>
+            <p>
+              {{ selectedEvent.location }}
+            </p>
+          </div>
+          <div>
+            <p class="text-black font-semibold">Price Range</p>
+            <p>
+              Rs.
+              {{ getLeastExpensiveTicketPrice(selectedEvent.id || "") }} - Rs.
+              {{ getMostExpensiveTicketPrice(selectedEvent.id || "") }}
+            </p>
+          </div>
+        </div>
+        <form
+          [formGroup]="buyTicketForm"
+          (ngSubmit)="onSubmit()"
+          class="flex flex-col gap-3"
+        >
+          <div class="flex gap-3 items-center flex-col">
+            <label for="quantity" class="text-black font-medium"
+              >Quantity</label
+            >
+            <p-inputNumber
               id="quantity"
               type="number"
-              pInputText
               name="quantity"
               min="1"
               max="{{ getAvailableTickets(selectedEvent.id || '') }}"
               required
               formControlName="quantity"
+              [showButtons]="true"
+              buttonLayout="horizontal"
+              incrementButtonClass="p-button-secondary"
+              decrementButtonClass="p-button-secondary"
+              incrementButtonIcon="pi pi-plus"
+              decrementButtonIcon="pi pi-minus"
+              [size]="4"
+              inputStyleClass="text-center"
             />
+            <p class="text-sm">
+              {{
+                "Only " +
+                  getAvailableTickets(selectedEvent.id || "") +
+                  " ticket/s remain"
+              }}
+            </p>
           </div>
-          <button type="submit" [disabled]="buyTicketForm.invalid" pButton label="Buy Tickets"></button>
+          <div class="mb-7">
+            <p class="text-black">Total Amount</p>
+            <p class="text-2xl font-semibold text-black">
+              {{
+                "Rs. " +
+                  getTotalPrice(
+                    buyTicketForm.value.quantity,
+                    selectedEvent.id || ""
+                  )
+              }}
+            </p>
+            <p>
+              {{
+                "(" +
+                  getTicketPriceGroup(
+                    buyTicketForm.value.quantity,
+                    selectedEvent.id || ""
+                  ) +
+                  ")"
+              }}
+            </p>
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              pButton
+              class="flex-1 flex justify-center items-center"
+              severity="secondary"
+              label="Cancel"
+              (click)="displayDialog = false; buyTicketForm.reset()"
+            ></button>
+            <button
+              class="flex-1"
+              type="submit"
+              [disabled]="buyTicketForm.invalid"
+              pButton
+              label="Buy Tickets"
+            ></button>
+          </div>
         </form>
       </div>
     </p-dialog>
