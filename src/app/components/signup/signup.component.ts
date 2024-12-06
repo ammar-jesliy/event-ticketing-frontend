@@ -110,6 +110,7 @@ export class SignupComponent implements OnInit {
         name: username,
         email: email,
         password: password,
+        dateCreated: new Date().toISOString(),
       };
 
       if (role === 'Customer') {
