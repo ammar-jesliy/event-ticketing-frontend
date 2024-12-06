@@ -11,13 +11,24 @@ export class VendorService {
   private apiUrl = 'http://localhost:8080/api/v1/vendors';
 
   private _vendorDetails = signal<Vendor | null>(null);
+  private _allVendors = signal<Vendor[]>([]);
 
   // To use the vendorDetails in other components, we need to create a getter method
   get vendorDetails() {
     return this._vendorDetails.asReadonly();
   }
 
+  get allVendors() {
+    return this._allVendors.asReadonly();
+  }
+
   constructor(private http: HttpClient) {}
+
+  fetchAllVendors() {
+    this.http.get<Vendor[]>(`${this.apiUrl}`).subscribe((vendors) => {
+      this._allVendors.set(vendors);
+    });
+  }
 
   checkEmailAvailability(email: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/check-email?email=${email}`);

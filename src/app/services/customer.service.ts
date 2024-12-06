@@ -11,13 +11,24 @@ export class CustomerService {
   private apiUrl = 'http://localhost:8080/api/v1/customers';
 
   private _customerDetails = signal<Customer | null>(null);
+  private _allCustomers = signal<Customer[]>([]);
 
   // To use the vendorDetails in other components, we need to create a getter method
   get customerDetails() {
     return this._customerDetails.asReadonly();
   }
 
+  get allCustomers() {
+    return this._allCustomers.asReadonly();
+  }
+
   constructor(private http: HttpClient) {}
+
+  fetchAllCustomers() {
+    this.http.get<Customer[]>(`${this.apiUrl}`).subscribe((customers) => {
+      this._allCustomers.set(customers);
+    });
+  }
 
   checkEmailAvailability(email: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/check-email?email=${email}`);
