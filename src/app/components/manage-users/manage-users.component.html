@@ -49,16 +49,16 @@
           </div>
         </div>
         <div
-          class="overflow-hidden text-sm font-medium text-gray-900 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300 flex items-center"
+          class="overflow-hidden text-sm font-medium text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300 flex items-center"
         >
           <p class="text-ellipsis line-clamp-1 overflow-hidden">
             {{ user.type }}
           </p>
         </div>
         <div
-          class="overflow-hidden text-sm font-medium text-gray-900 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300 flex items-center"
+          class="overflow-hidden text-sm font-medium text-gray-500 p-3 border-r border-solid border-y-0 border-l-0 border-gray-300 flex items-center"
         >
-          <p class="text-ellipsis line-clamp-1 overflow-hidden">User</p>
+          <p class="text-ellipsis line-clamp-1 overflow-hidden">{{ user.dateCreated | date: "medium" }}</p>
         </div>
         <div
           class="overflow-hidden text-sm font-medium text-gray-900 p-3 flex items-center justify-center"

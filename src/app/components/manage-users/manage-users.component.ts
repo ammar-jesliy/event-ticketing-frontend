@@ -29,7 +29,7 @@ export class ManageUsersComponent implements OnInit {
     this.customerService.fetchAllCustomers();
   }
 
-  // Map allVendors and allCustomers to a single array and add the type of user as an attribute
+  // Map allVendors and allCustomers to a single array and add the type of user as an attribute, and sort by date created
   getAllUsers(): any[] {
     let users: any[] = [];
     this.allVendors().forEach(vendor => {
@@ -44,7 +44,11 @@ export class ManageUsersComponent implements OnInit {
         type: 'customer'
       });
     });
-    return users;
+    return users.sort((a, b) => {
+      if (!a.dateCreated) return 1;
+      if (!b.dateCreated) return -1;
+      return new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime();
+    });
   }
 
 }
