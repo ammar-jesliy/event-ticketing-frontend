@@ -16,6 +16,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'app-buy-tickets',
@@ -46,6 +47,7 @@ export class BuyTicketsComponent implements OnInit {
     private eventService: EventService,
     private ticketService: TicketService,
     private ticketpoolService: TicketpoolService,
+    private customerService: CustomerService,
     private fb: FormBuilder
   ) {
     this.allEvents = this.eventService.allEvents;
@@ -71,15 +73,19 @@ export class BuyTicketsComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.selectedEvent) {
-      console.log('Buying tickets for event: ', this.selectedEvent);
-
+    if (this.buyTicketForm.valid && this.selectedEvent) {
+      const { quantity } = this.buyTicketForm.value;
+      const customerId = JSON.parse(localStorage.getItem('user') || '{}').id;
       const eventId = this.selectedEvent.id || '';
 
-      console.log('Form data: ', this.buyTicketForm.value);
-      console.log('Event ID: ', eventId);
+      // Buy tickets
+      this.customerService.buyTickets(eventId, customerId, quantity);
+
+      this.displayDialog = false;
+      this.buyTicketForm.reset();
+    } else {
+      this.buyTicketForm.markAllAsTouched();
     }
-    this.displayDialog = false;
   }
 
   // Return a list of events that have tickets available by checking the tickets list has tickets in the ticket pool

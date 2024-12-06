@@ -82,7 +82,7 @@
               formControlName="quantity"
             />
           </div>
-          <button type="submit" pButton label="Buy Tickets"></button>
+          <button type="submit" [disabled]="buyTicketForm.invalid" pButton label="Buy Tickets"></button>
         </form>
       </div>
     </p-dialog>
