@@ -86,3 +86,13 @@ p {
   width: 100%;
   min-width: 1200px;
 }
+
+.grid-container-manage-users {
+  display: grid;
+  grid-template-columns:
+    4fr /* User */
+    2fr /* User Type */
+    2fr /* Vendor Name */
+    60px; /* Customer Name */
+  width: 100%;
+}
