@@ -11,6 +11,8 @@ import { CustomerService } from '../../services/customer.service';
 import { Vendor } from '../../util/vendor';
 import { VendorService } from '../../services/vendor.service';
 import { PieChartComponent } from '../charts/pie-chart/pie-chart.component';
+import { EventService } from '../../services/event.service';
+import { Event } from '../../util/event';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -29,29 +31,33 @@ export class AdminDashboardComponent implements OnInit {
   allTickets: Signal<Ticket[] | null>;
   allCustmomers: Signal<Customer[] | null>;
   allVendors: Signal<Vendor[] | null>;
+  allEvents: Signal<Event[] | null>;
 
   constructor(
     private ticketpoolService: TicketpoolService,
     private ticketService: TicketService,
     private customerService: CustomerService,
-    private vendorService: VendorService
+    private vendorService: VendorService,
+    private eventService: EventService
   ) {
     this.allTicketPools = this.ticketpoolService.allTicketPools;
     this.allTickets = this.ticketService.allTickets;
     this.allCustmomers = this.customerService.allCustomers;
     this.allVendors = this.vendorService.allVendors;
+    this.allEvents = this.eventService.allEvents;
   }
 
   ngOnInit(): void {
     this.ticketpoolService.fetchAllTicketPools();
     this.ticketService.fetchAllTickets();
     this.customerService.fetchAllCustomers();
+    this.vendorService.fetchAllVendors();
+    this.eventService.fetchAllEvents();
   }
 
   // Get the totoal number of sold tickets in all ticket pools
   getTotalSoldTickets(): number {
     const ticketPools = this.allTicketPools();
-    console.log(this.allTicketPools());
     if (!ticketPools) {
       return 0;
     }
@@ -92,5 +98,52 @@ export class AdminDashboardComponent implements OnInit {
     const customerCount = customers ? customers.length : 0;
     const vendorCount = vendors ? vendors.length : 0;
     return customerCount + vendorCount;
+  }
+
+  // Sort all events by date in ascending order and only return the top 4 events
+  getRecentEvents(): Event[] {
+    const events = this.allEvents();
+    if (!events) {
+      return [];
+    }
+    return events
+      .sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      })
+      .slice(0, 4);
+  }
+
+  // Get the number of tickets sold in a ticket pool of an event, takes eventId as parameter
+  getTicketsSold(eventId: string): number {
+    const ticketPool = this.allTicketPools()?.find(
+      (ticketPool) => ticketPool.eventId === eventId
+    );
+    return ticketPool ? ticketPool.ticketSold : 0;
+  }
+
+  // Get the number of tickets available in a ticket pool of an event, takes eventId as parameter
+  getTicketsAvailable(eventId: string): number {
+    const ticketPool = this.allTicketPools()?.find(
+      (ticketPool) => ticketPool.eventId === eventId
+    );
+    return ticketPool ? ticketPool.availableTickets : 0;
+  }
+
+  // Get the percentage of tickets sold in a ticket pool of an event, takes eventId as parameter
+  getTicketsSoldPercentage(eventId: string): number {
+    const ticketPool = this.allTicketPools()?.find(
+      (ticketPool) => ticketPool.eventId === eventId
+    );
+    if (!ticketPool) {
+      return 0;
+    }
+    if (ticketPool.ticketSold === 0 && ticketPool.availableTickets === 0) {
+      return 0;
+    }
+    return (
+      (ticketPool.ticketSold /
+        (ticketPool.ticketSold + ticketPool.availableTickets)) *
+      100
+    );
   }
 }

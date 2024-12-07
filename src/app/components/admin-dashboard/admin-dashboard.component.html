@@ -1,5 +1,5 @@
 <app-home-template>
-  <div class="flex flex-col gap-5 min-w-[600px]">
+  <div class="flex flex-col gap-5 min-w-[700px]">
     <div>
       <h3 class="text-2xl font-medium mt-2 mb-0">Welcome, Admin!</h3>
     </div>
@@ -85,7 +85,7 @@
     </div>
     <div class="grid xl:grid-cols-2 grid-cols-1 gap-5">
       <div
-        class="min-w-[350px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6 pb-14 gap-5"
+        class="min-w-[350px] h-[460px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6 pb-14 gap-5"
       >
         <div class="pb-2 w-full flex items-center justify-between mb-5">
           <div class="flex items-center gap-5 font-semibold">
@@ -126,17 +126,54 @@
             [value2]="getTotalAvailableTickets()"
             class="flex justify-center items-center"
           ></app-pie-chart>
-          <!-- <p-chart
-            type="line"
-            [data]="ticketSummaryData"
-            [options]="ticketSummaryOptions"
-            styleClass="h-[300px]"
-          /> -->
         </div>
       </div>
       <div
-        class="min-w-[350px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6 gap-5"
-      ></div>
+        class="min-w-[350px] h-[460px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6 gap-5"
+      >
+        <div class="pb-2 w-full flex items-center justify-between mb-5">
+          <div class="flex items-center gap-5 font-semibold">
+            <i class="pi pi-calendar text-base bg-gray-100 px-1 rounded-md"></i>
+            <p class="font-medium">Active Events</p>
+          </div>
+          <i
+            class="pi pi-info-circle text-xl opacity-50"
+            pTooltip="The list of the recent active events in the system."
+            tooltipPosition="left"
+          ></i>
+        </div>
+        <div class="flex flex-col flex-1 gap-5">
+          <div
+            class="h-16 w-full flex items-center justify-between bg-gray-100 rounded-xl py-2 px-6"
+            *ngFor="let event of getRecentEvents()"
+          >
+            <div class="flex flex-col">
+              <p
+                class="text-lg font-medium max-w-[150px] line-clamp-1 text-ellipsis"
+              >
+                {{ event.name }}
+              </p>
+              <p
+                class="text-sm text-gray-500 leading-tight max-w-[150px] line-clamp-1 text-ellipsis"
+              >
+                {{ "Date: " + (event.date | date) }}
+              </p>
+            </div>
+            <div class="flex items-center gap-5">
+              <p>
+                <span class="text-gray-500">Tickets Sold: </span
+                >{{ getTicketsSoldPercentage(event.id!).toFixed(2) + "%" }}
+              </p>
+              <div class="relative h-4 w-[200px] bg-gray-200 rounded-full">
+                <div
+                  class="absolute h-4 rounded-full bg-blue-500"
+                  [style.width]="getTicketsSoldPercentage(event.id!) + '%'"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </app-home-template>
