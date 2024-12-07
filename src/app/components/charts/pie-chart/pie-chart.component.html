@@ -1,0 +1,24 @@
+<div class="relative overflow-hidden w-[400px] h-[200px]">
+  <div
+    class="w-[400px] h-[400px] overflow-hidden rounded-full absolute"
+    [ngStyle]="{ transform: 'rotate(' + getRotation(value1, value2) + 'deg)' }"
+  >
+    <div class="absolute w-full h-full bg-gray-300 half-grey"></div>
+    <div
+      class="absolute top-0 left-1/2 w-3 h-full bg-white -translate-x-1/2"
+    ></div>
+    <div class="absolute w-full h-full bg-blue-500 half-blue"></div>
+  </div>
+  <div
+    class="w-[300px] h-[300px] overflow-hidden rounded-full absolute z-10 left-1/2 -translate-x-1/2 top-[50px]"
+  >
+    <div class="absolute w-full h-full bg-white">
+      <div class="w-full h-full flex flex-col items-center mt-20">
+        <p class="text-4xl font-semibold leading-[1]">
+          {{ ((value1 / (value1 + value2)) * 100).toFixed(2) }}%
+        </p>
+        <p class="text-gray-500 font-medium">sold</p>
+      </div>
+    </div>
+  </div>
+</div>
