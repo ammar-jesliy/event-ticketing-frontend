@@ -10,6 +10,7 @@ import { Customer } from '../../util/customer';
 import { CustomerService } from '../../services/customer.service';
 import { Vendor } from '../../util/vendor';
 import { VendorService } from '../../services/vendor.service';
+import { ChartModule } from 'primeng/chart';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,6 +24,9 @@ export class AdminDashboardComponent implements OnInit {
   allTickets: Signal<Ticket[] | null>;
   allCustmomers: Signal<Customer[] | null>;
   allVendors: Signal<Vendor[] | null>;
+
+  ticketSummaryData: any;
+  ticketSummaryOptions: any;
 
   constructor(
     private ticketpoolService: TicketpoolService,
@@ -40,6 +44,22 @@ export class AdminDashboardComponent implements OnInit {
     this.ticketpoolService.fetchAllTicketPools();
     this.ticketService.fetchAllTickets();
     this.customerService.fetchAllCustomers();
+
+    // this.ticketSummaryData = {
+    //   labels: ['Sold Tickets', 'Available Tickets'],
+    //   datasets: [
+    //     {
+    //       data: [this.getTotalSoldTickets(), this.getTotalAvailableTickets()],
+    //       backgroundColor: ['#FF6384', '#36A2EB'],
+    //       hoverBackgroundColor: ['#FF6384', '#36A2EB'],
+    //     },
+    //   ],
+    // };
+
+    // this.ticketSummaryOptions = {
+    //   responsive: true,
+    //   maintainAspectRatio: false,
+    // };
   }
 
   // Get the totoal number of sold tickets in all ticket pools
@@ -51,6 +71,18 @@ export class AdminDashboardComponent implements OnInit {
     }
     return ticketPools.reduce(
       (acc, ticketPool) => acc + ticketPool.ticketSold,
+      0
+    );
+  }
+
+  // Get the total number of available tickets in all ticket pools
+  getTotalAvailableTickets(): number {
+    const ticketPools = this.allTicketPools();
+    if (!ticketPools) {
+      return 0;
+    }
+    return ticketPools.reduce(
+      (acc, ticketPool) => acc + ticketPool.availableTickets,
       0
     );
   }
