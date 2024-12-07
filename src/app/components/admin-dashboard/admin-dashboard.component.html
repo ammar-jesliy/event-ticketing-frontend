@@ -10,7 +10,7 @@
         <div class="pb-2 w-full flex items-center justify-between">
           <div class="flex items-center gap-5 font-semibold">
             <i class="pi pi-ticket text-base bg-gray-100 px-1 rounded-md"></i>
-            <p class="font-medium">Tickets Sold</p>
+            <p class="font-medium">Total Tickets Sold</p>
           </div>
           <i
             class="pi pi-info-circle text-xl opacity-50"
@@ -19,7 +19,9 @@
           ></i>
         </div>
         <div class="flex flex-1 w-full items-center gap-6">
-          <p class="text-4xl font-medium">1,272</p>
+          <p class="text-4xl font-medium">
+            {{ getTotalSoldTickets() }}
+          </p>
           <div
             class="flex items-center justify-center gap-2 px-2 py-1 rounded-md bg-green-200 text-green-700"
           >
@@ -34,16 +36,18 @@
         <div class="pb-2 w-full flex items-center justify-between">
           <div class="flex items-center gap-5 font-semibold">
             <i class="pi pi-dollar text-base bg-gray-100 px-1 rounded-md"></i>
-            <p class="font-medium">Total Earnings</p>
+            <p class="font-medium">Total Revenue</p>
           </div>
           <i
             class="pi pi-info-circle text-xl opacity-50"
-            pTooltip="Total earning from tickets sold in the time frame."
+            pTooltip="Total revenue generated from ticket sales in the system."
             tooltipPosition="left"
           ></i>
         </div>
         <div class="flex flex-1 w-full items-center gap-6">
-          <p class="text-4xl font-medium">Rs. 250,200</p>
+          <p class="text-4xl font-medium">
+            {{ "Rs. " + (getTotalRevenue() | number:'1.0-0') }}
+          </p>
           <div
             class="flex items-center justify-center gap-2 px-2 py-1 rounded-md bg-green-200 text-green-700"
           >
@@ -58,7 +62,7 @@
         <div class="pb-2 w-full flex items-center justify-between">
           <div class="flex items-center gap-5 font-semibold">
             <i class="pi pi-user text-base bg-gray-100 px-1 rounded-md"></i>
-            <p class="font-medium">Unique Customers</p>
+            <p class="font-medium">Total Users</p>
           </div>
           <i
             class="pi pi-info-circle text-xl opacity-50"
@@ -67,7 +71,9 @@
           ></i>
         </div>
         <div class="flex flex-1 w-full items-center gap-6">
-          <p class="text-4xl font-medium">210</p>
+          <p class="text-4xl font-medium">
+            {{ getTotalUsers() }}
+          </p>
           <div
             class="flex items-center justify-center gap-2 px-2 py-1 rounded-md bg-red-200 text-red-700"
           >
