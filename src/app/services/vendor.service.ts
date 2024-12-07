@@ -80,4 +80,8 @@ export class VendorService {
         console.log('Tickets released');
       });
   }
+
+  deleteVendor(vendorId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${vendorId}`);
+  }
 }
