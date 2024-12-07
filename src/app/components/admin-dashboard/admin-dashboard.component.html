@@ -1,11 +1,11 @@
 <app-home-template>
-  <div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-5 min-w-[600px]">
     <div>
       <h3 class="text-2xl font-medium mt-2 mb-0">Welcome, Admin!</h3>
     </div>
     <div class="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-5">
       <div
-        class="min-w-[350px] h-[150px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6"
+        class="min-w-[350px] h-[150px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6 gap-4"
       >
         <div class="pb-2 w-full flex items-center justify-between">
           <div class="flex items-center gap-5 font-semibold">
@@ -14,7 +14,7 @@
           </div>
           <i
             class="pi pi-info-circle text-xl opacity-50"
-            pTooltip="Total tickets sold in the time frame."
+            pTooltip="Total tickets sold in the system."
             tooltipPosition="left"
           ></i>
         </div>
@@ -66,7 +66,7 @@
           </div>
           <i
             class="pi pi-info-circle text-xl opacity-50"
-            pTooltip="Number of unique customers who bought tickets in the time frame."
+            pTooltip="The total number of users registered in the system."
             tooltipPosition="left"
           ></i>
         </div>
@@ -83,11 +83,11 @@
         </div>
       </div>
     </div>
-    <div class="grid xl:grid-cols-2 grid-cols-1">
+    <div class="grid xl:grid-cols-2 grid-cols-1 gap-5">
       <div
-        class="min-w-[350px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6 gap-4"
+        class="min-w-[350px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6 pb-14 gap-5"
       >
-        <div class="pb-2 w-full flex items-center justify-between">
+        <div class="pb-2 w-full flex items-center justify-between mb-5">
           <div class="flex items-center gap-5 font-semibold">
             <i
               class="pi pi-chart-line text-base bg-gray-100 px-1 rounded-md"
@@ -96,7 +96,7 @@
           </div>
           <i
             class="pi pi-info-circle text-xl opacity-50"
-            pTooltip="Total tickets sold in the time frame."
+            pTooltip="Chart representing the total tickets sold and remaining."
             tooltipPosition="left"
           ></i>
         </div>
@@ -112,15 +112,20 @@
           </div>
           <div class="flex flex-col gap-2">
             <div class="flex gap-2 items-center">
-              <div class="w-2 h-5 rounded-full bg-gray-400"></div>
+              <div class="w-2 h-5 rounded-full bg-gray-300"></div>
               <p class="text-gray-600 leading-[1]">Tickets Remaining</p>
             </div>
             <p class="text-2xl font-semibold pl-4">
-              {{ getTotalAvailableTickets()}}
+              {{ getTotalAvailableTickets() }}
             </p>
           </div>
         </div>
-        <div>
+        <div class="mt-5">
+          <app-pie-chart
+            [value1]="getTotalSoldTickets()"
+            [value2]="getTotalAvailableTickets()"
+            class="flex justify-center items-center"
+          ></app-pie-chart>
           <!-- <p-chart
             type="line"
             [data]="ticketSummaryData"
@@ -129,6 +134,9 @@
           /> -->
         </div>
       </div>
+      <div
+        class="min-w-[350px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6 gap-5"
+      ></div>
     </div>
   </div>
 </app-home-template>

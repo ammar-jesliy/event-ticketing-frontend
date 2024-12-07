@@ -10,12 +10,17 @@ import { Customer } from '../../util/customer';
 import { CustomerService } from '../../services/customer.service';
 import { Vendor } from '../../util/vendor';
 import { VendorService } from '../../services/vendor.service';
-import { ChartModule } from 'primeng/chart';
+import { PieChartComponent } from '../charts/pie-chart/pie-chart.component';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [HomeTemplateComponent, TooltipModule, CommonModule],
+  imports: [
+    HomeTemplateComponent,
+    TooltipModule,
+    CommonModule,
+    PieChartComponent,
+  ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css',
 })
