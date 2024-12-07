@@ -19,6 +19,16 @@ export class PieChartComponent implements OnInit {
   }
 
   getRotation(value1: number, value2: number): number {
+    if (value1 === 0 && value2 === 0) {
+      return 0 - 90;
+    }
     return (value1 / (value1 + value2)) * 180 - 90;
+  }
+
+  getSoldPercentage(value1: number, value2: number): number {
+    if (value1 === 0 && value2 === 0) {
+      return 0;
+    }
+    return (value1 / (value1 + value2)) * 100;
   }
 }
