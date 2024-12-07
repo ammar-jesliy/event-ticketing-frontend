@@ -14,6 +14,7 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
 import { BuyTicketsComponent } from './components/buy-tickets/buy-tickets.component';
 import { ConfigureComponent } from './components/configure/configure.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,7 +24,13 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [authGuard],
-    data: { allowedRoles: ['customer', 'vendor', 'admin'] },
+    data: { allowedRoles: ['vendor'] },
+  },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
+    canActivate: [authGuard],
+    data: { allowedRoles: ['admin'] },
   },
   {
     path: 'events',

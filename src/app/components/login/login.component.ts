@@ -36,13 +36,13 @@ export class LoginComponent implements OnInit {
   private adminCredentials = {
     email: 'admin@admin.com',
     password: 'admin123',
-  }
+  };
 
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
     private vendorService: VendorService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -69,12 +69,15 @@ export class LoginComponent implements OnInit {
         // Store user authentication status
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userRole', 'admin');
-        localStorage.setItem('user', JSON.stringify({ email: email, name: 'Admin' }));
+        localStorage.setItem(
+          'user',
+          JSON.stringify({ email: email, name: 'Admin' })
+        );
 
         alert('Successfully logged in as admin');
         this.loginForm.reset();
 
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/admin-dashboard']);
         return;
       }
 
@@ -94,10 +97,10 @@ export class LoginComponent implements OnInit {
                 localStorage.setItem('userRole', 'customer');
                 localStorage.setItem('user', JSON.stringify(response));
 
-                alert("Successfully logged in customer");
+                alert('Successfully logged in customer');
                 this.loginForm.reset();
 
-                this.router.navigate(['/dashboard'])
+                this.router.navigate(['/buy-tickets']);
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);
@@ -107,15 +110,15 @@ export class LoginComponent implements OnInit {
           } else if (!isVendor) {
             this.vendorService.loginVendor(email, password).subscribe({
               next: (response) => {
-               // Store user authentication status
-               localStorage.setItem('isAuthenticated', 'true');
-               localStorage.setItem('userRole', "vendor");
-               localStorage.setItem("user", JSON.stringify(response));
+                // Store user authentication status
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('userRole', 'vendor');
+                localStorage.setItem('user', JSON.stringify(response));
 
-               alert("Successfully logged in Vendor");
-               this.loginForm.reset();
+                alert('Successfully logged in Vendor');
+                this.loginForm.reset();
 
-               this.router.navigate(['/dashboard'])
+                this.router.navigate(['/dashboard']);
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);

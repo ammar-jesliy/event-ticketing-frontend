@@ -9,7 +9,7 @@
   </div>
   <div class="flex flex-col justify-between flex-1 p-5">
     <div class="flex flex-col font-medium">
-      <div>
+      <div *ngIf="role === 'vendor'">
         <a
           routerLink="/dashboard"
           routerLinkActive="text-blue-500"
@@ -26,6 +26,30 @@
             [ngClass]="{
               'text-black': isActive('/dashboard'),
               'text-gray-400': !isActive('/dashboard')
+            }"
+            class="transition-none"
+          >
+            Dashboard
+          </p>
+        </a>
+      </div>
+      <div *ngIf="role === 'admin'">
+        <a
+          routerLink="/admin-dashboard"
+          routerLinkActive="text-blue-500"
+          class="flex items-center gap-4 no-underline p-3 rounded-lg hover:bg-gray-100 transition-none"
+        >
+          <i
+            class="pi pi-objects-column transition-none"
+            [ngClass]="{
+              'text-blue-500': isActive('/admin-dashboard'),
+              'text-gray-400': !isActive('/admin-dashboard')
+            }"
+          ></i>
+          <p
+            [ngClass]="{
+              'text-black': isActive('/admin-dashboard'),
+              'text-gray-400': !isActive('/admin-dashboard')
             }"
             class="transition-none"
           >

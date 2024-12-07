@@ -1,0 +1,81 @@
+<app-home-template>
+  <div>
+    <div>
+      <h3 class="text-2xl font-medium mt-2">Welcome, Admin!</h3>
+    </div>
+    <div class="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-5">
+      <div
+        class="min-w-[350px] h-[150px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6"
+      >
+        <div class="pb-2 w-full flex items-center justify-between">
+          <div class="flex items-center gap-5 font-semibold">
+            <i class="pi pi-ticket text-base bg-gray-100 px-1 rounded-md"></i>
+            <p class="font-medium">Tickets Sold</p>
+          </div>
+          <i
+            class="pi pi-info-circle text-xl opacity-50"
+            pTooltip="Total tickets sold in the time frame."
+            tooltipPosition="left"
+          ></i>
+        </div>
+        <div class="flex flex-1 w-full items-center gap-6">
+          <p class="text-4xl font-medium">1,272</p>
+          <div
+            class="flex items-center justify-center gap-2 px-2 py-1 rounded-md bg-green-200 text-green-700"
+          >
+            <p class="text-xs">25.1%</p>
+            <i class="pi pi-arrow-up-right text-xs"></i>
+          </div>
+        </div>
+      </div>
+      <div
+        class="min-w-[350px] h-[150px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6"
+      >
+        <div class="pb-2 w-full flex items-center justify-between">
+          <div class="flex items-center gap-5 font-semibold">
+            <i class="pi pi-dollar text-base bg-gray-100 px-1 rounded-md"></i>
+            <p class="font-medium">Total Earnings</p>
+          </div>
+          <i
+            class="pi pi-info-circle text-xl opacity-50"
+            pTooltip="Total earning from tickets sold in the time frame."
+            tooltipPosition="left"
+          ></i>
+        </div>
+        <div class="flex flex-1 w-full items-center gap-6">
+          <p class="text-4xl font-medium">Rs. 250,200</p>
+          <div
+            class="flex items-center justify-center gap-2 px-2 py-1 rounded-md bg-green-200 text-green-700"
+          >
+            <p class="text-xs">12.7%</p>
+            <i class="pi pi-arrow-up-right text-xs"></i>
+          </div>
+        </div>
+      </div>
+      <div
+        class="min-w-[350px] h-[150px] rounded-xl bg-white flex flex-col border-solid border-[1px] border-gray-300 p-6"
+      >
+        <div class="pb-2 w-full flex items-center justify-between">
+          <div class="flex items-center gap-5 font-semibold">
+            <i class="pi pi-user text-base bg-gray-100 px-1 rounded-md"></i>
+            <p class="font-medium">Unique Customers</p>
+          </div>
+          <i
+            class="pi pi-info-circle text-xl opacity-50"
+            pTooltip="Number of unique customers who bought tickets in the time frame."
+            tooltipPosition="left"
+          ></i>
+        </div>
+        <div class="flex flex-1 w-full items-center gap-6">
+          <p class="text-4xl font-medium">210</p>
+          <div
+            class="flex items-center justify-center gap-2 px-2 py-1 rounded-md bg-red-200 text-red-700"
+          >
+            <p class="text-xs">4.9%</p>
+            <i class="pi pi-arrow-down-right text-xs"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-home-template>
