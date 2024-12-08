@@ -100,7 +100,7 @@ export class AdminDashboardComponent implements OnInit {
     return customerCount + vendorCount;
   }
 
-  // Sort all events by date in ascending order and only return the top 4 events
+  // Sort all events by date in descending order and only return the top 4 events
   getRecentEvents(): Event[] {
     const events = this.allEvents();
     if (!events) {
@@ -108,7 +108,7 @@ export class AdminDashboardComponent implements OnInit {
     }
     return events
       .sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
       })
       .slice(0, 4);
   }
