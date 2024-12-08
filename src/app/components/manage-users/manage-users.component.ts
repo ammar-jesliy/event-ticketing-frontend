@@ -1,3 +1,11 @@
+/**
+ * Component responsible for managing users, including vendors and customers.
+ * It fetches and displays all users
+ *
+ * This component is only accessible to the system admin.
+ *
+ */
+
 import { Component, OnInit, Signal } from '@angular/core';
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 import { CommonModule } from '@angular/common';
@@ -31,12 +39,21 @@ export class ManageUsersComponent implements OnInit {
     this.allCustomers = this.customerService.allCustomers;
   }
 
+  /**
+   * Lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
+   * This method is used to fetch all vendors and customers when the component is initialized.
+   *
+   */
   ngOnInit(): void {
     this.vendorService.fetchAllVendors();
     this.customerService.fetchAllCustomers();
   }
 
-  // Map allVendors and allCustomers to a single array and add the type of user as an attribute, and sort by date created
+  /**
+   * Retrieves all users, including vendors and customers, and sorts them by their creation date.
+   *
+   * @returns {any[]} An array of user objects, each with an additional `type` property indicating whether the user is a 'vendor' or 'customer'.
+   */
   getAllUsers(): any[] {
     let users: any[] = [];
     this.allVendors().forEach((vendor) => {

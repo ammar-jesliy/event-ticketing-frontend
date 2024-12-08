@@ -1,4 +1,12 @@
-import { Component, OnInit, signal, Signal } from '@angular/core';
+/**
+ * SellTicketsComponent is responsible for handling the selling of tickets for events.
+ * It provides functionalities to display a form for selling tickets, validate the form,
+ * and submit the form to release tickets for a specific event by the vendor.
+ *
+ * This component is only accessible to vendors.
+ */
+
+import { Component, OnInit, Signal } from '@angular/core';
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -61,6 +69,17 @@ export class SellTicketsComponent implements OnInit {
     this.tickets = this.ticketService.vendorTickets;
   }
 
+  /**
+   * Initializes the component by fetching necessary data and setting up the form.
+   *
+   * - Retrieves the vendor ID from the local storage.
+   * - Fetches all events using the event service.
+   * - Fetches transactions by vendor ID using the transaction service.
+   * - Fetches tickets by vendor ID using the ticket service.
+   * - Initializes the sell tickets form with form controls for event name, ticket price, and ticket quantity.
+   *
+   * @returns {void}
+   */
   ngOnInit(): void {
     const vendorId = JSON.parse(localStorage.getItem('user') || '{}').id;
 
@@ -78,6 +97,21 @@ export class SellTicketsComponent implements OnInit {
   showDialog() {
     this.formVisible = true;
   }
+
+  /**
+   * Handles the form submission for selling tickets.
+   *
+   * This method performs the following actions:
+   * 1. Validates the form.
+   * 2. Extracts event name, ticket price, and ticket quantity from the form.
+   * 3. Retrieves the vendor ID from local storage.
+   * 4. Finds the event ID based on the event name.
+   * 5. If the event ID is not found, logs an error and marks all form fields as touched.
+   * 6. If the event ID is found, releases the tickets using the vendor service.
+   * 7. Resets the form and hides it upon successful submission.
+   *
+   * @returns {void}
+   */
 
   onSubmit() {
     if (this.sellTicketsForm.valid) {
@@ -113,11 +147,24 @@ export class SellTicketsComponent implements OnInit {
     }
   }
 
+  /**
+   * Retrieves the name of an event based on the provided event ID.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {string} The name of the event if found, otherwise an empty string.
+   */
   getEventName(eventId: string) {
     return this.allEvents()?.find((event) => event.id === eventId)?.name || '';
   }
 
-  // Get all event names that are ongoing and have not been released once by the vendor yet
+  /**
+   * Retrieves the names of events that are ongoing but have not yet been released by the current vendor.
+   *
+   * This method filters through all events and returns the names of those events
+   * that are currently ongoing and have not been released by the current vendor.
+   *
+   * @returns {string[]} An array of event names that are ongoing and unreleased.
+   */
   getUnreleasedEventNames() {
     const releasedEventIds =
       this.transactions()?.map((transaction) => transaction.eventId) || [];
@@ -134,7 +181,11 @@ export class SellTicketsComponent implements OnInit {
     );
   }
 
-  // Get all transactions that are of type 'RELEASE'
+  /**
+   * Retrieves the list of transactions that have a transaction type of 'RELEASE'.
+   *
+   * @returns {Array} An array of transactions filtered by the 'RELEASE' transaction type.
+   */
   getReleaseTransactions() {
     return (
       this.transactions()?.filter(
@@ -143,14 +194,24 @@ export class SellTicketsComponent implements OnInit {
     );
   }
 
-  // Get event close date by eventId
+  /**
+   * Retrieves the close date of an event based on the provided event ID.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {string} The close date of the event if found, otherwise an empty string.
+   */
   getEventCloseDate(eventId: string) {
     return (
       this.allEvents()?.find((event) => event.id === eventId)?.closeDate || ''
     );
   }
 
-  // Sort transactions by event close date
+  /**
+   * Sorts an array of transactions by the close date of the associated events in descending order.
+   *
+   * @param transactions - An array of transactions to be sorted.
+   * @returns The sorted array of transactions, with the transactions associated with the latest event close dates appearing first.
+   */
   sortTransactionsByEventCloseDate(transactions: Transaction[]) {
     return transactions.sort((a, b) => {
       const eventACloseDate = new Date(
@@ -163,7 +224,14 @@ export class SellTicketsComponent implements OnInit {
     });
   }
 
-  // Get ongoing event names (events that are open and have not closed yet)
+  /**
+   * Retrieves the names of ongoing events.
+   *
+   * This method filters the list of all events to find those that are currently ongoing,
+   * i.e., events whose open date is in the past and close date is in the future.
+   *
+   * @returns {string[]} An array of names of ongoing events. If no events are ongoing, returns an empty array.
+   */
   getOngoingEventNames() {
     return (
       this.allEvents()
@@ -178,7 +246,15 @@ export class SellTicketsComponent implements OnInit {
     );
   }
 
-  // Get event status by eventId
+  /**
+   * Determines the status of an event based on its close date.
+   *
+   * @param eventId - The unique identifier of the event.
+   * @returns A string indicating the status of the event:
+   *          - 'Closed' if the event's close date is in the past.
+   *          - 'Ongoing' if the event's close date is in the future.
+   *          - An empty string if the event is not found.
+   */
   getEventStatus(eventId: string) {
     const currentDate = new Date().getTime();
     const event = this.allEvents()?.find((event) => event.id === eventId);
@@ -194,7 +270,12 @@ export class SellTicketsComponent implements OnInit {
     }
   }
 
-  // Get event status color by eventId
+  /**
+   * Determines the background color based on the event's status.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {string} - Returns 'bg-red-500' if the event is closed, 'bg-blue-500' if the event is open, or an empty string if the event is not found.
+   */
   getEventStatusColor(eventId: string) {
     const currentDate = new Date().getTime();
     const event = this.allEvents()?.find((event) => event.id === eventId);
@@ -210,7 +291,12 @@ export class SellTicketsComponent implements OnInit {
     }
   }
 
-  // Get the total number of tickets with isAvailable = false for a given eventId
+  /**
+   * Retrieves the count of sold tickets for a specific event.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {number} The number of tickets that have been sold for the specified event.
+   */
   getSoldTicketsCount(eventId: string): number {
     return (
       this.tickets()?.filter(

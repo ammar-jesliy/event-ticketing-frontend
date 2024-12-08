@@ -1,3 +1,13 @@
+/**
+ * This file contains the implementation of the LoginComponent
+ * for the event-ticketing-frontend application. The component handles the
+ * login functionality for different user roles including admin, customer,
+ * and vendor. It uses Angular's reactive forms for form handling and
+ * validation, and integrates with customer and vendor services to
+ * authenticate users.
+ *
+ */
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -45,6 +55,12 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
+  /**
+   * Initializes the login form with validation rules.
+   * This method is called once the component has been initialized.
+   * It sets up the form group with email and password fields,
+   * applying required and email validators to the respective fields.
+   */
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -52,6 +68,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  /**
+   * Handles the form submission for the login process.
+   *
+   * The function performs the following actions:
+   * - Sets the loading state to true while processing.
+   * - Checks if the email matches the admin credentials.
+   * - If the email matches, verifies the password and logs in the admin.
+   * - If the email does not match, checks the email availability in customer and vendor services.
+   * - Logs in the user as a customer or vendor based on the email availability.
+   * - Stores the user authentication status and role in local storage.
+   * - Navigates to the appropriate dashboard based on the user role.
+   * - Resets the login form after successful login.
+   * - Displays alerts for successful login or invalid credentials.
+   * - Handles errors during the login process and displays appropriate error messages.
+   */
   onSubmit() {
     if (this.loginForm.valid) {
       this.loading = true;

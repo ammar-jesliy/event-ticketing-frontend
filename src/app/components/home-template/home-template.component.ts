@@ -7,8 +7,6 @@ import { HeaderComponent } from '../header/header.component';
   standalone: true,
   imports: [SidemenuComponent, HeaderComponent],
   templateUrl: './home-template.component.html',
-  styleUrl: './home-template.component.css'
+  styleUrl: './home-template.component.css',
 })
-export class HomeTemplateComponent {
-
-}
+export class HomeTemplateComponent {}

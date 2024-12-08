@@ -1,3 +1,11 @@
+/**
+ * Service for handling transactions.
+ *
+ * This service provides methods to fetch all transactions, transactions by vendor ID,
+ * and transactions by customer ID from the backend API.
+ *
+ */
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Transaction } from '../util/transaction';
@@ -26,12 +34,27 @@ export class TransactionService {
     return this._customerTransactions.asReadonly();
   }
 
+  /**
+   * Fetches all transactions from the API and updates the `_allTransactions` state.
+   *
+   * This method sends an HTTP GET request to the API endpoint specified by `apiUrl`.
+   * Upon receiving the response, it updates the `_allTransactions` state with the
+   * fetched transactions.
+   *
+   * @returns {void}
+   */
   fetchAllTransactions() {
     this.http.get<Transaction[]>(`${this.apiUrl}`).subscribe((transactions) => {
       this._allTransactions.set(transactions);
     });
   }
 
+  /**
+   * Fetches transactions for a given vendor by their ID.
+   *
+   * @param vendorId - The unique identifier of the vendor.
+   * @returns void
+   */
   fetchTransactionsByVendorId(vendorId: string) {
     this.http
       .get<Transaction[]>(`${this.apiUrl}/vendor/${vendorId}`)
@@ -40,6 +63,12 @@ export class TransactionService {
       });
   }
 
+  /**
+   * Fetches transactions for a given customer by their ID.
+   *
+   * @param customerId - The unique identifier of the customer whose transactions are to be fetched.
+   * @returns void
+   */
   fetchTransactionsByCustomerId(customerId: string) {
     this.http
       .get<Transaction[]>(`${this.apiUrl}/customer/${customerId}`)

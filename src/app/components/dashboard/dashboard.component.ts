@@ -1,6 +1,13 @@
+/**
+ * Represents the dashboard component of the event ticketing application.
+ * This component is responsible for displaying various statistics and information
+ * related to tickets, transactions, and events.
+ * This component is only accessible to authenticated vendors.
+ */
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, Signal } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 import { TooltipModule } from 'primeng/tooltip';
@@ -46,6 +53,12 @@ export class DashboardComponent implements OnInit {
     this.allEvents = this.eventService.allEvents;
   }
 
+  /**
+   * Lifecycle hook that is called after Angular has initialized all data-bound properties of a component.
+   * This method is used to load vendor data from storage, fetch tickets and transactions by vendor ID,
+   * and fetch all events.
+   *
+   */
   ngOnInit() {
     this.vendorService.loadVendorFromStorage();
     this.ticketService.fetchTicketsByVendorId(this.vendorDetails()?.id || '');
@@ -55,21 +68,37 @@ export class DashboardComponent implements OnInit {
     this.eventService.fetchAllEvents();
   }
 
-  // Calculate the total tickets with available as false
+  /**
+   * Calculates the total number of tickets that have been sold by the vendor.
+   *
+   * @returns {number} The total number of sold tickets. If no tickets are available, returns 0.
+   */
   getTotalSoldTickets(): number {
     return (
       this.vendorTickets()?.filter((ticket) => !ticket.available).length || 0
     );
   }
 
-  // Calculate the total tickets with available as true
+  /**
+   * Calculates the total number of available tickets released by the vendor.
+   *
+   * @returns {number} The total count of tickets that are available.
+   */
   getTotalAvailableTickets(): number {
     return (
       this.vendorTickets()?.filter((ticket) => ticket.available).length || 0
     );
   }
 
-  // Calculate the total price of all sold tickets
+  /**
+   * Calculates the total revenue from sold tickets.
+   *
+   * This method iterates over the list of vendor tickets and sums up the prices
+   * of all tickets that are not available (i.e., sold). If there are no tickets
+   * or the list is undefined, it returns 0.
+   *
+   * @returns {number} The total revenue from sold tickets.
+   */
   getTotalRevenue(): number {
     return (
       this.vendorTickets()?.reduce((total, ticket) => {
@@ -81,7 +110,11 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // Calculate the total number of unique customer who bought tickets using the customer ids in each ticket with available as false
+  /**
+   * Calculates the total number of unique customers who have purchased tickets.
+   *
+   * @returns {number} The total number of unique customers.
+   */
   getTotalCustomers(): number {
     return (
       this.vendorTickets()?.reduce((customers, ticket) => {
@@ -97,7 +130,16 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // Return the transactions with transactionType = "RELEASE" in the vendorTransactions signal array, sort by date in descending order and return the first 4 transactions
+  /**
+   * Retrieves the most recent transactions of type 'RELEASE'.
+   *
+   * This method filters the vendor transactions to include only those with a
+   * transaction type of 'RELEASE', sorts them in descending order based on the
+   * timestamp, and returns the top 4 most recent transactions.
+   *
+   * @returns {Transaction[]} An array of the 4 most recent 'RELEASE' transactions,
+   * or an empty array if there are no such transactions.
+   */
   getRecentTransactions(): Transaction[] {
     return (
       this.vendorTransactions()
@@ -111,7 +153,12 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // Get the total number of tickets with isAvailable = false for a given eventId
+  /**
+   * Retrieves the count of sold tickets for a specific event.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {number} The number of tickets that have been sold for the specified event.
+   */
   getSoldTicketsCount(eventId: string): number {
     return (
       this.vendorTickets()?.filter(
@@ -120,7 +167,13 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // Get the percentage of tickets sold for an event release, divide the number of sold tickets by the number of tickets released for the event from the transactions amount, take eventId and transactionId as parameter ang get sold tickets from the getSoldTicketsCount method
+  /**
+   * Calculates the percentage of tickets sold for a specific event.
+   *
+   * @param eventId - The unique identifier of the event.
+   * @param transactionId - The unique identifier of the transaction.
+   * @returns The percentage of tickets sold as a number.
+   */
   getPercentageSold(eventId: string, transactionId: string): number {
     const totalTickets = this.vendorTransactions()?.find(
       (transaction) => transaction.id === transactionId
@@ -130,12 +183,22 @@ export class DashboardComponent implements OnInit {
     return (soldTickets / totalTickets!) * 100;
   }
 
-  // Get the event name by eventId
+  /**
+   * Retrieves the name of an event based on its ID.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {string} The name of the event if found, otherwise an empty string.
+   */
   getEventName(eventId: string): string {
     return this.allEvents()?.find((event) => event.id === eventId)?.name || '';
   }
 
-  // Get the event date by eventId
+  /**
+   * Retrieves the date of an event based on the provided event ID.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {string} The date of the event as a string, or an empty string if the event is not found.
+   */
   getEventDate(eventId: string): string {
     return this.allEvents()?.find((event) => event.id === eventId)?.date || '';
   }

@@ -1,3 +1,11 @@
+/**
+ * Service to handle configuration-related operations.
+ *
+ * This service provides methods to fetch and update configuration settings
+ * from a backend API. It uses Angular's HttpClient to make HTTP requests
+ * and maintains the configuration details using a reactive signal.
+ */
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Configuration } from '../util/configuration';
@@ -16,12 +24,21 @@ export class ConfigurationService {
     return this._configDetails.asReadonly();
   }
 
-  // Fetch configuration details
+  /**
+   * Fetches the configuration settings from the server.
+   *
+   * @returns An Observable of type Configuration containing the configuration settings.
+   */
   getConfiguration() {
     return this.http.get<Configuration>(`${this.apiUrl}`);
   }
 
-  // Update configuration details
+  /**
+   * Updates the configuration by sending a POST request to the API.
+   *
+   * @param {Configuration} config - The configuration object to be updated.
+   * @returns {void}
+   */
   updateConfiguration(config: Configuration) {
     this.http
       .post<Configuration>(`${this.apiUrl}`, config)

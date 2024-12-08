@@ -1,3 +1,11 @@
+/**
+ * SignupComponent is responsible for handling the user registration process.
+ * It provides a form for users to sign up as either a Customer or a Vendor.
+ * The component includes form validation, email availability checks, and
+ * submission handling for user registration.
+ *
+ */
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -54,6 +62,16 @@ export class SignupComponent implements OnInit {
     private router: Router
   ) {}
 
+  /**
+   * Initializes the signup form with validation rules.
+   * This method is called once the component is initialized.
+   *
+   * The form contains the following fields:
+   * - `username`: A required field.
+   * - `email`: A required field with email format validation and a custom email validator.
+   * - `password`: A required field with a minimum length of 6 characters.
+   * - `role`: A required field.
+   */
   ngOnInit(): void {
     this.signupForm = this.fb.group({
       username: ['', Validators.required],
@@ -67,6 +85,16 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  /**
+   * Validates the email input to ensure it is not already taken by an admin, customer, or vendor.
+   *
+   * This validator performs the following checks:
+   * 1. Denies registration if the email is the admin email (`admin@admin.com`).
+   * 2. Checks if the email is already taken by a customer or vendor by calling respective services.
+   *
+   * @param control - The form control containing the email value to validate.
+   * @returns An observable that emits a validation error object if the email is taken, or null if the email is available.
+   */
   emailValidator(control: FormControl): Observable<ValidationErrors | null> {
     // Deny the user to register using the admin email
     const adminEmail = 'admin@admin.com';
@@ -90,16 +118,22 @@ export class SignupComponent implements OnInit {
         isCustomerAvailable && isVendorAvailable ? null : { emailTaken: true }
       )
     );
-
-    // return this.customerService
-    //   .checkEmailAvailability(control.value)
-    //   .pipe(
-    //     map((isAvailable: boolean) =>
-    //       isAvailable ? null : { emailTaken: true }
-    //     )
-    //   );
   }
 
+  /**
+   * Handles the form submission for the signup process.
+   *
+   * This method checks if the signup form is valid. If valid, it sets the loading state to true
+   * and extracts the form values. It then creates a user object and determines the role of the user.
+   * Depending on the role, it calls the appropriate service to register the user (Customer or Vendor).
+   *
+   * On successful registration, it resets the form, navigates to the login page, and displays a success message.
+   * On failure, it logs the error message, displays an error alert, and resets the loading state.
+   *
+   * If the form is invalid, it marks all form controls as touched to display validation errors.
+   *
+   * @returns {void}
+   */
   onSubmit() {
     if (this.signupForm.valid) {
       this.loading = true;

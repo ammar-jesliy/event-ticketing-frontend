@@ -1,3 +1,11 @@
+/**
+ * Component for buying tickets.
+ *
+ * This component allows users to select events and purchase tickets. It fetches events and tickets from the respective services,
+ * manages the state of the selected event, and handles the form submission for buying tickets.
+ *
+ */
+
 import { Component, OnInit, Signal } from '@angular/core';
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 import { Event } from '../../util/event';
@@ -59,7 +67,7 @@ export class BuyTicketsComponent implements OnInit {
   /**
    * Lifecycle hook that is called after data-bound properties of a directive are initialized.
    * Initializes the component by fetching all events and tickets, and setting up the form group.
-   * 
+   *
    * @returns {void}
    */
   ngOnInit(): void {
@@ -72,6 +80,12 @@ export class BuyTicketsComponent implements OnInit {
     });
   }
 
+  /**
+   * Handles the click event for selecting an event.
+   *
+   * @param eventId - The unique identifier of the event to be selected.
+   * @returns void
+   */
   onClick(eventId: string) {
     this.selectedEvent = this.allEvents()?.find(
       (event) => event.id === eventId
@@ -79,6 +93,15 @@ export class BuyTicketsComponent implements OnInit {
     this.displayDialog = true;
   }
 
+  /**
+   * Handles the form submission for buying tickets.
+   *
+   * This method checks if the form is valid and an event is selected. If both conditions are met,
+   * it extracts the quantity of tickets from the form, retrieves the customer ID from local storage,
+   * and the event ID from the selected event. It then calls the `buyTickets` method of the
+   * `customerService` to purchase the tickets. After the purchase, it hides the dialog and resets the form.
+   * If the form is invalid, it marks all form controls as touched to display validation errors.
+   */
   onSubmit() {
     if (this.buyTicketForm.valid && this.selectedEvent) {
       const { quantity } = this.buyTicketForm.value;
@@ -95,7 +118,14 @@ export class BuyTicketsComponent implements OnInit {
     }
   }
 
-  // Return a list of events that have tickets available by checking the tickets list has tickets in the ticket pool
+  /**
+   * Retrieves a list of events that have available tickets.
+   *
+   * This method first ensures that the ticket pool for each event is fetched and cached.
+   * It then filters the events to include only those that have tickets available.
+   *
+   * @returns {Event[]} An array of events that have available tickets.
+   */
   eventsWithTickets(): Event[] {
     const events = this.allEvents() || [];
     events.forEach((event) => {
@@ -111,7 +141,13 @@ export class BuyTicketsComponent implements OnInit {
     });
   }
 
-  // Fetch ticketpool by eventId and store in map
+  /**
+   * Fetches the ticket pool for a given event ID and caches it.
+   * If the ticket pool for the specified event ID is already cached, it does nothing.
+   * Otherwise, it fetches the ticket pool from the service and stores it in the cache.
+   *
+   * @param eventId - The ID of the event for which to fetch the ticket pool.
+   */
   fetchTicketPoolByEventId(eventId: string) {
     if (!this.ticketPoolCache.has(eventId)) {
       this.ticketpoolService
@@ -123,6 +159,12 @@ export class BuyTicketsComponent implements OnInit {
   }
 
   // Get most expensive ticket price of a given event
+  /**
+   * Retrieves the price of the most expensive available ticket for a given event.
+   *
+   * @param eventId - The unique identifier of the event.
+   * @returns The price of the most expensive available ticket, or `undefined` if no tickets are available.
+   */
   getMostExpensiveTicketPrice(eventId: string): number | undefined {
     const mostExpensiveTicket = this.allTickets()
       ?.filter((ticket) => ticket.eventId === eventId && ticket.available)
@@ -130,7 +172,12 @@ export class BuyTicketsComponent implements OnInit {
     return mostExpensiveTicket?.price;
   }
 
-  // Get least expensive ticket price of a given event
+  /**
+   * Retrieves the price of the least expensive available ticket for a given event.
+   *
+   * @param eventId - The unique identifier of the event.
+   * @returns The price of the least expensive available ticket, or `undefined` if no tickets are available.
+   */
   getLeastExpensiveTicketPrice(eventId: string): number | undefined {
     const leastExpensiveTicket = this.allTickets()
       ?.filter((ticket) => ticket.eventId === eventId && ticket.available)
@@ -138,13 +185,25 @@ export class BuyTicketsComponent implements OnInit {
     return leastExpensiveTicket?.price;
   }
 
-  // Get available tickets in ticket by eventId
+  /**
+   * Retrieves the number of available tickets for a given event.
+   *
+   * @param eventId - The unique identifier of the event.
+   * @returns The number of available tickets for the specified event. Returns 0 if the event is not found in the ticket pool cache.
+   */
   getAvailableTickets(eventId: string): number {
     const ticketPool = this.ticketPoolCache.get(eventId);
     return ticketPool ? ticketPool.availableTickets : 0;
   }
 
-  // Get total price of tickets by getting the quantity and eventId as parameters, calculate the total price by adding from the least expensive tickets in the ticketpool tickets
+  /**
+   * Calculates the total price for a given quantity of tickets for a specific event.
+   * It selects the least expensive tickets available in the ticket pool.
+   *
+   * @param {number} quantity - The number of tickets to purchase.
+   * @param {string} eventId - The ID of the event for which tickets are being purchased.
+   * @returns {number} - The total price for the specified quantity of tickets.
+   */
   getTotalPrice(quantity: number, eventId: string): number {
     const ticketPool = this.ticketPoolCache.get(eventId);
     if (!ticketPool) {
@@ -158,7 +217,14 @@ export class BuyTicketsComponent implements OnInit {
     }, 0);
   }
 
-  // return the count of ticket prices grouped by price by taking quantity and eventId as parameters, return a string with the count then price, for example 2 x $10
+  /**
+   * Retrieves a string representation of the ticket price group for a given quantity and event ID.
+   *
+   * @param quantity - The number of tickets to be purchased.
+   * @param eventId - The unique identifier of the event.
+   * @returns A string that describes the quantity of tickets at each price point, formatted as "quantity x Rs. price".
+   *          Returns an empty string if the ticket pool for the given event ID is not found.
+   */
   getTicketPriceGroup(quantity: number, eventId: string): string {
     const ticketPool = this.ticketPoolCache.get(eventId);
     if (!ticketPool) {

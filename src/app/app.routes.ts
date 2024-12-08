@@ -1,3 +1,23 @@
+/**
+ * Defines the routes for the Angular application.
+ *
+ * Routes:
+ * - '' (HomeComponent): The home page of the application.
+ * - 'login' (LoginComponent): The login page.
+ * - 'signup' (SignupComponent): The signup page.
+ * - 'dashboard' (DashboardComponent): The vendor dashboard, protected by authGuard, accessible only to 'vendor' role.
+ * - 'admin-dashboard' (AdminDashboardComponent): The admin dashboard, protected by authGuard, accessible only to 'admin' role.
+ * - 'events' (EventsComponent): The events management page, protected by authGuard, accessible only to 'admin' role.
+ * - 'transactions' (TransactionsComponent): The transactions page, protected by authGuard, accessible to 'customer', 'vendor', and 'admin' roles.
+ * - 'profile' (ProfileComponent): The user profile page, protected by authGuard, accessible to 'customer' and 'vendor' roles.
+ * - 'sell-tickets' (SellTicketsComponent): The ticket selling page, protected by authGuard, accessible only to 'vendor' role.
+ * - 'buy-tickets' (BuyTicketsComponent): The ticket buying page, protected by authGuard, accessible only to 'customer' role.
+ * - 'configure' (ConfigureComponent): The configuration page, protected by authGuard, accessible only to 'admin' role.
+ * - 'manage-users' (ManageUsersComponent): The user management page, protected by authGuard, accessible only to 'admin' role.
+ * - 'unauthorized' (UnauthorizedComponent): The unauthorized access page.
+ * - '**' (PageNotFoundComponent): The page not found component for undefined routes.
+ */
+
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';

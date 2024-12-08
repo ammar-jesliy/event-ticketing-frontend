@@ -1,3 +1,9 @@
+/**
+ * HeaderComponent is a standalone Angular component that represents the header section of the application.
+ * It dynamically updates the title based on the current route.
+ *
+ */
+
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { ButtonModule } from 'primeng/button';

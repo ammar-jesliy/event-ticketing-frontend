@@ -1,3 +1,11 @@
+/**
+ * EventsComponent is responsible for displaying and managing events.
+ * It includes functionalities for fetching all events, creating new events,
+ * and determining the status and status color of events based on their dates.
+ *
+ * This component is only accessible to the system admin.
+ */
+
 import { Component, OnInit, Signal } from '@angular/core';
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 import { DialogModule } from 'primeng/dialog';
@@ -48,6 +56,18 @@ export class EventsComponent implements OnInit {
     this.allEvents = this.eventService.allEvents;
   }
 
+  /**
+   * Initializes the component by fetching all events and setting up the event creation form.
+   *
+   * The form includes the following fields:
+   * - `name`: The name of the event (required).
+   * - `description`: A description of the event (required).
+   * - `date`: The date of the event (required, must be after `closeDate`).
+   * - `openDate`: The date when the event opens (required).
+   * - `closeDate`: The date when the event closes (required, must be after `openDate`).
+   * - `location`: The location of the event (required).
+   * - `maxCapacity`: The maximum capacity of the event (required, minimum 1, maximum 500000).
+   */
   ngOnInit(): void {
     this.eventService.fetchAllEvents();
 
@@ -63,10 +83,14 @@ export class EventsComponent implements OnInit {
         [Validators.required, Validators.min(1), Validators.max(500000)],
       ],
     });
-
   }
 
-  // Custom validator to check if the date is after a given date
+  /**
+   * Validator function to check if the control's date value is after the date value of another control.
+   *
+   * @param compareTo - The name of the control to compare the date value with.
+   * @returns A validator function that takes an `AbstractControl` and returns a validation error object if the date is not after the compared control's date, or `null` if the validation passes.
+   */
   dateAfter(compareTo: string) {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const formGroup = control.parent as FormGroup;
@@ -81,6 +105,16 @@ export class EventsComponent implements OnInit {
   }
 
   // Returns a color based on the status of the event
+  /**
+   * Determines the status color based on the current date and the provided start and end dates.
+   *
+   * @param {string} startDate - The start date of the event in ISO string format.
+   * @param {string} endDate - The end date of the event in ISO string format.
+   * @returns {string} - A string representing the CSS class for the status color:
+   *                     - 'bg-blue-500' if the current date is before the start date.
+   *                     - 'bg-green-500' if the current date is between the start and end dates.
+   *                     - 'bg-red-500' if the current date is after the end date.
+   */
   getStatusColor(startDate: string, endDate: string) {
     const now = new Date().toISOString();
     const start = new Date(startDate).toISOString();
@@ -95,7 +129,16 @@ export class EventsComponent implements OnInit {
     }
   }
 
-  // Returns the status text based on the status of the event
+  /**
+   * Determines the status of an event based on its start and end dates.
+   *
+   * @param startDate - The start date of the event in ISO string format.
+   * @param endDate - The end date of the event in ISO string format.
+   * @returns A string indicating the status of the event:
+   *          - 'Upcoming' if the current date is before the start date.
+   *          - 'Ongoing' if the current date is between the start and end dates.
+   *          - 'Ended' if the current date is after the end date.
+   */
   getStatus(startDate: string, endDate: string) {
     const now = new Date().toISOString();
     const start = new Date(startDate).toISOString();
@@ -110,6 +153,16 @@ export class EventsComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles the form submission for creating a new event.
+   *
+   * This method first checks if the form is valid. If valid, it extracts the form values,
+   * converts the date fields to ISO string format, and creates a new event object.
+   * The new event is then sent to the event service to be created.
+   * Finally, it hides the form.
+   *
+   * @returns {void}
+   */
   onSubmit() {
     if (this.createEventForm.valid) {
       const {

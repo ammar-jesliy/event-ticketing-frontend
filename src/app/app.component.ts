@@ -13,11 +13,4 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'event-ticketing-frontend';
-  value!: number;
-
-  isLoggedIn(): boolean {
-    // Check if the user is authenticated by checking the value in local storage
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    return isAuthenticated !== null && isAuthenticated === 'true';
-  }
 }
