@@ -56,6 +56,12 @@ export class BuyTicketsComponent implements OnInit {
     this.allTickets = this.ticketService.allTickets;
   }
 
+  /**
+   * Lifecycle hook that is called after data-bound properties of a directive are initialized.
+   * Initializes the component by fetching all events and tickets, and setting up the form group.
+   * 
+   * @returns {void}
+   */
   ngOnInit(): void {
     // Fetch all events
     this.eventService.fetchAllEvents();
@@ -67,7 +73,6 @@ export class BuyTicketsComponent implements OnInit {
   }
 
   onClick(eventId: string) {
-    console.log('Clicked on event: ', eventId);
     this.selectedEvent = this.allEvents()?.find(
       (event) => event.id === eventId
     );

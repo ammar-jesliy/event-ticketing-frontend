@@ -63,7 +63,6 @@ export class TransactionsComponent implements OnInit {
 
   // Sort transactions by date in ascending order
   sortByDate(transactions: Transaction[]) {
-    console.log('Sorting transactions by date: ', transactions);
     return transactions.sort((a, b) => {
       return new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime();
     });

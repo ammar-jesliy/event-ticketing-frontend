@@ -36,27 +36,6 @@ export class ManageUsersComponent implements OnInit {
     this.customerService.fetchAllCustomers();
   }
 
-  // onClickDeleteUser(userType: string, userId: string) {
-  //   this.displayDeleteUserDialog = true;
-  //   console.log(`Delete user ${userType} with id ${userId}`);
-  //   this.selectedUserId = userId;
-  //   this.selectedUserType = userType;
-  // }
-
-  // deleteUser() {
-  //   // Delete the user
-  //   if (this.selectedUserType === 'vendor') {
-  //     this.vendorService.deleteVendor(this.selectedUserId).subscribe(() => {
-  //       console.log('Vendor deleted');
-  //       this.displayDeleteUserDialog = false;
-  //       this.vendorService.fetchAllVendors();
-  //     });
-  //   } else if (this.selectedUserType === 'customer') {
-  //     console.log('Deleting customer');
-  //     this.displayDeleteUserDialog = false;
-  //   }
-  // }
-
   // Map allVendors and allCustomers to a single array and add the type of user as an attribute, and sort by date created
   getAllUsers(): any[] {
     let users: any[] = [];

@@ -68,8 +68,6 @@ export class SellTicketsComponent implements OnInit {
     this.transactionService.fetchTransactionsByVendorId(vendorId);
     this.ticketService.fetchTicketsByVendorId(vendorId);
 
-    console.log('Event Names: ', this.eventNames());
-
     this.sellTicketsForm = this.fb.group({
       eventName: ['', Validators.required],
       ticketPrice: ['', Validators.required],
@@ -79,7 +77,6 @@ export class SellTicketsComponent implements OnInit {
 
   showDialog() {
     this.formVisible = true;
-    console.log('Show Dialog');
   }
 
   onSubmit() {

@@ -28,7 +28,6 @@ export class TransactionService {
 
   fetchAllTransactions() {
     this.http.get<Transaction[]>(`${this.apiUrl}`).subscribe((transactions) => {
-      console.log('Fetched transactions: ', transactions);
       this._allTransactions.set(transactions);
     });
   }
@@ -37,7 +36,6 @@ export class TransactionService {
     this.http
       .get<Transaction[]>(`${this.apiUrl}/vendor/${vendorId}`)
       .subscribe((transactions) => {
-        console.log('Fetched vendor transactions: ', transactions);
         this._vendorTransactions.set(transactions);
       });
   }
@@ -46,7 +44,6 @@ export class TransactionService {
     this.http
       .get<Transaction[]>(`${this.apiUrl}/customer/${customerId}`)
       .subscribe((transactions) => {
-        console.log('Fetched customer transactions: ', transactions);
         this._customerTransactions.set(transactions);
       });
   }

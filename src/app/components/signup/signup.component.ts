@@ -68,7 +68,6 @@ export class SignupComponent implements OnInit {
   }
 
   emailValidator(control: FormControl): Observable<ValidationErrors | null> {
-
     // Deny the user to register using the admin email
     const adminEmail = 'admin@admin.com';
     if (control.value === adminEmail) {
@@ -146,17 +145,6 @@ export class SignupComponent implements OnInit {
         alert('Unknown Error, Try Again');
         this.signupForm.reset();
       }
-
-      // console.log('Role = ' + role);
-      // console.log('Username = ' + username);
-      // console.log('Email = ' + email);
-      // console.log('Password = ' + password);
-
-      // setTimeout(() => {
-      //   this.loading = false;
-      //   alert('Sign-up Successful');
-      //   this.signupForm.reset();
-      // });
     } else {
       this.signupForm.markAllAsTouched();
     }

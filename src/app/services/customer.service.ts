@@ -59,16 +59,11 @@ export class CustomerService {
   }
 
   buyTickets(eventId: string, customerId: string, numberOfTickets: number) {
-    console.log('Buy Tickets');
-    this.http
-      .post(`${this.apiUrl}/buy-tickets`, {
-        eventId,
-        customerId,
-        numberOfTickets,
-      })
-      .subscribe((response) => {
-        console.log('Buy Tickets Response: ', response);
-      });
+    this.http.post(`${this.apiUrl}/buy-tickets`, {
+      eventId,
+      customerId,
+      numberOfTickets,
+    });
   }
 
   loadCustomerFromStorage() {

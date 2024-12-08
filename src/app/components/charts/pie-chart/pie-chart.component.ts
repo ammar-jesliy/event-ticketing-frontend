@@ -15,7 +15,6 @@ export class PieChartComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.value1);
   }
 
   getRotation(value1: number, value2: number): number {

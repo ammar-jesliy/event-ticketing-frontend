@@ -64,7 +64,6 @@ export class EventsComponent implements OnInit {
       ],
     });
 
-    console.log(this.allEvents());
   }
 
   // Custom validator to check if the date is after a given date
@@ -140,7 +139,6 @@ export class EventsComponent implements OnInit {
       this.eventService.createEvent(newEvent);
     }
 
-    console.log('Submit');
     this.formVisible = false;
   }
 }

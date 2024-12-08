@@ -23,7 +23,6 @@ export class TicketService {
 
   fetchAllTickets() {
     this.http.get<Ticket[]>(`${this.apiUrl}`).subscribe((tickets) => {
-      console.log('Fetched tickets: ', tickets);
       this._allTickets.set(tickets);
     });
   }
@@ -32,7 +31,6 @@ export class TicketService {
     this.http
       .get<Ticket[]>(`${this.apiUrl}/vendor/${vendorId}`)
       .subscribe((tickets) => {
-        console.log('Fetched vendor tickets: ', tickets);
         this._vendorTickets.set(tickets);
       });
   }

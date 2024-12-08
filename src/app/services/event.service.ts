@@ -23,7 +23,6 @@ export class EventService {
 
   fetchAllEvents() {
     this.http.get<Event[]>(this.apiUrl).subscribe((events) => {
-      console.log('Fetched all events: ', events);
       this._allEvents.set(events);
       this._eventNames.set(events.map((event) => event.name));
     });

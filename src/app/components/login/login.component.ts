@@ -88,7 +88,6 @@ export class LoginComponent implements OnInit {
       }).subscribe({
         next: ({ isCustomer, isVendor }) => {
           this.loading = false;
-          console.log(!isCustomer, !isVendor);
           if (!isCustomer) {
             this.customerService.loginCustomer(email, password).subscribe({
               next: (response) => {
@@ -103,7 +102,6 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/buy-tickets']);
               },
               error: (error: HttpErrorResponse) => {
-                console.log(error.message);
                 alert('Invalid Credentials');
               },
             });
@@ -121,7 +119,6 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/dashboard']);
               },
               error: (error: HttpErrorResponse) => {
-                console.log(error.message);
                 alert('Invalid Credentials');
               },
             });

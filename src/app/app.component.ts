@@ -18,7 +18,6 @@ export class AppComponent {
   isLoggedIn(): boolean {
     // Check if the user is authenticated by checking the value in local storage
     const isAuthenticated = localStorage.getItem('isAuthenticated');
-    console.log(isAuthenticated);
     return isAuthenticated !== null && isAuthenticated === 'true';
   }
 }

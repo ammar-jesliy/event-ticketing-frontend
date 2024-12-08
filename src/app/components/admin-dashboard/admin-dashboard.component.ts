@@ -1,3 +1,9 @@
+/**
+ * AdminDashboardComponent is responsible for displaying the admin dashboard.
+ * It fetches and displays data related to ticket pools, tickets, customers, vendors, and events.
+ * It also provides methods to calculate various statistics such as total sold tickets, available tickets, total revenue, and more.
+ */
+
 import { Component, OnInit, Signal } from '@angular/core';
 import { HomeTemplateComponent } from '../home-template/home-template.component';
 import { Ticketpool } from '../../util/ticketpool';
@@ -24,12 +30,12 @@ import { Event } from '../../util/event';
     PieChartComponent,
   ],
   templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.css',
+  styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent implements OnInit {
   allTicketPools: Signal<Ticketpool[] | null>;
   allTickets: Signal<Ticket[] | null>;
-  allCustmomers: Signal<Customer[] | null>;
+  allCustomers: Signal<Customer[] | null>;
   allVendors: Signal<Vendor[] | null>;
   allEvents: Signal<Event[] | null>;
 
@@ -42,11 +48,18 @@ export class AdminDashboardComponent implements OnInit {
   ) {
     this.allTicketPools = this.ticketpoolService.allTicketPools;
     this.allTickets = this.ticketService.allTickets;
-    this.allCustmomers = this.customerService.allCustomers;
+    this.allCustomers = this.customerService.allCustomers;
     this.allVendors = this.vendorService.allVendors;
     this.allEvents = this.eventService.allEvents;
   }
 
+  /**
+   * Lifecycle hook that is called after data-bound properties of a directive are initialized.
+   * This method is used to fetch all necessary data for the admin dashboard.
+   * It fetches ticket pools, tickets, customers, vendors, and events from their respective services.
+   *
+   * @returns {void}
+   */
   ngOnInit(): void {
     this.ticketpoolService.fetchAllTicketPools();
     this.ticketService.fetchAllTickets();
@@ -55,7 +68,11 @@ export class AdminDashboardComponent implements OnInit {
     this.eventService.fetchAllEvents();
   }
 
-  // Get the totoal number of sold tickets in all ticket pools
+  /**
+   * Calculates the total number of sold tickets from all ticket pools.
+   *
+   * @returns {number} The total number of sold tickets. Returns 0 if there are no ticket pools.
+   */
   getTotalSoldTickets(): number {
     const ticketPools = this.allTicketPools();
     if (!ticketPools) {
@@ -67,7 +84,11 @@ export class AdminDashboardComponent implements OnInit {
     );
   }
 
-  // Get the total number of available tickets in all ticket pools
+  /**
+   * Calculates the total number of available tickets from all ticket pools.
+   *
+   * @returns {number} The total number of available tickets. Returns 0 if there are no ticket pools.
+   */
   getTotalAvailableTickets(): number {
     const ticketPools = this.allTicketPools();
     if (!ticketPools) {
@@ -79,7 +100,13 @@ export class AdminDashboardComponent implements OnInit {
     );
   }
 
-  // Get the total price of all tickets in the allTickets signal array with available as false
+  /**
+   * Calculates the total revenue generated from sold tickets.
+   *
+   * This method iterates over all tickets and sums up the prices of the tickets that are not available (i.e., sold).
+   *
+   * @returns {number} The total revenue from sold tickets. If there are no tickets, returns 0.
+   */
   getTotalRevenue(): number {
     const tickets = this.allTickets();
     if (!tickets) {
@@ -91,45 +118,74 @@ export class AdminDashboardComponent implements OnInit {
     );
   }
 
-  // Get the total number of users in the allCustomers and allVendors signal arrays
+  /**
+   * Calculates the total number of users by summing the number of customers and vendors.
+   *
+   * @returns {number} The total number of users.
+   */
   getTotalUsers(): number {
-    const customers = this.allCustmomers();
+    const customers = this.allCustomers();
     const vendors = this.allVendors();
     const customerCount = customers ? customers.length : 0;
     const vendorCount = vendors ? vendors.length : 0;
     return customerCount + vendorCount;
   }
 
-  // Sort all events by date in descending order and only return the top 4 events
+  /**
+   * Retrieves the most recent events.
+   *
+   * This method fetches all events and sorts them in descending order based on their date.
+   * It then returns the top 4 most recently created events.
+   *
+   * @returns {Event[]} An array of the 4 most recent events. If no events are available, an empty array is returned.
+   */
   getRecentEvents(): Event[] {
     const events = this.allEvents();
     if (!events) {
       return [];
     }
-    return events
-      .sort((a, b) => {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      })
-      .slice(0, 4);
+    const sortedEvents = events.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+    return sortedEvents.slice(0, 4);
   }
 
-  // Get the number of tickets sold in a ticket pool of an event, takes eventId as parameter
+  /**
+   * Retrieves the number of tickets sold for a specific event.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {number} The number of tickets sold for the event. Returns 0 if the event is not found.
+   */
   getTicketsSold(eventId: string): number {
-    const ticketPool = this.allTicketPools()?.find(
+    const ticketPools = this.allTicketPools();
+    const ticketPool = ticketPools?.find(
       (ticketPool) => ticketPool.eventId === eventId
     );
     return ticketPool ? ticketPool.ticketSold : 0;
   }
 
-  // Get the number of tickets available in a ticket pool of an event, takes eventId as parameter
+  /**
+   * Retrieves the number of available tickets for a given event.
+   *
+   * @param {string} eventId - The unique identifier of the event.
+   * @returns {number} The number of available tickets for the specified event.
+   *                    Returns 0 if the event is not found or if there are no available tickets.
+   */
   getTicketsAvailable(eventId: string): number {
-    const ticketPool = this.allTicketPools()?.find(
+    const ticketPools = this.allTicketPools();
+    const ticketPool = ticketPools?.find(
       (ticketPool) => ticketPool.eventId === eventId
     );
     return ticketPool ? ticketPool.availableTickets : 0;
   }
 
   // Get the percentage of tickets sold in a ticket pool of an event, takes eventId as parameter
+  /**
+   * Calculates the percentage of tickets sold for a given event.
+   *
+   * @param {string} eventId - The ID of the event for which to calculate the tickets sold percentage.
+   * @returns {number} The percentage of tickets sold for the specified event. Returns 0 if the event is not found or if there are no tickets available.
+   */
   getTicketsSoldPercentage(eventId: string): number {
     const ticketPool = this.allTicketPools()?.find(
       (ticketPool) => ticketPool.eventId === eventId
@@ -137,7 +193,7 @@ export class AdminDashboardComponent implements OnInit {
     if (!ticketPool) {
       return 0;
     }
-    if (ticketPool.ticketSold === 0 && ticketPool.availableTickets === 0) {
+    if (ticketPool.ticketSold + ticketPool.availableTickets === 0) {
       return 0;
     }
     return (
