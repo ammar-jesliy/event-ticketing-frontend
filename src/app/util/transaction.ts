@@ -1,5 +1,5 @@
 export interface Transaction{
-    id?: string;
+    id: string;
     timeStamp: string;
     ticketIds: string[];
     customerId?: string;
