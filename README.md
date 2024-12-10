@@ -4,6 +4,31 @@ This is the frontend of the Real-Time Event Ticketing System, developed using An
 
 ---
 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+    - [Installation](#installation)
+    - [Development server](#development-server)
+    - [Build](#build)
+    - [Running unit tests](#running-unit-tests)
+- [Folder Structure](#folder-structure)
+- [Contributing](#contributing)
+- [Troubleshooting](#troubleshooting)
+    - [Common Issues](#common-issues)
+    - [Debugging Tips](#debugging-tips)
+    - [Getting Help](#getting-help)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
+
+
+
+
+---
+
 ## **Project Overview**
 
 The frontend serves as the client-side application for the Real-Time Event Ticketing System. It enables:
