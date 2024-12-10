@@ -10,22 +10,19 @@ This is the frontend of the Real-Time Event Ticketing System, developed using An
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
-    - [Installation](#installation)
-    - [Development server](#development-server)
-    - [Build](#build)
-    - [Running unit tests](#running-unit-tests)
+  - [Installation](#installation)
+  - [Development server](#development-server)
+  - [Build](#build)
+  - [Running unit tests](#running-unit-tests)
 - [Folder Structure](#folder-structure)
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
-    - [Common Issues](#common-issues)
-    - [Debugging Tips](#debugging-tips)
-    - [Getting Help](#getting-help)
+  - [Common Issues](#common-issues)
+  - [Debugging Tips](#debugging-tips)
+  - [Getting Help](#getting-help)
 - [License](#license)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
-
-
-
 
 ---
 
@@ -52,7 +49,7 @@ The frontend serves as the client-side application for the Real-Time Event Ticke
 
 - [Node.js](https://nodejs.org/) (version 14.x or later)
 - [Angular CLI](https://github.com/angular/angular-cli) (version 18.2.9)
-- A running instance of the backend API ([Backend README](link-to-backend-readme))
+- A running instance of the backend API ([Backend README](https://github.com/ammar-jesliy/event-ticketing-backend/blob/main/README.md))
 
 ---
 
