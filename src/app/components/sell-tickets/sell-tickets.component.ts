@@ -150,6 +150,7 @@ export class SellTicketsComponent implements OnInit {
         .releaseTicket(eventId, vendorId, ticketPrice, ticketQuantity)
         .subscribe(() => {
           this.showSuccess();
+          this.transactionService.fetchTransactionsByVendorId(vendorId);
         });
 
       this.formVisible = false;
