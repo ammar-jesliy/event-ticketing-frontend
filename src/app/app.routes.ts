@@ -68,7 +68,7 @@ export const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [authGuard],
-    data: { allowedRoles: ['customer', 'vendor'] },
+    data: { allowedRoles: ['customer'] },
   },
   {
     path: 'sell-tickets',
