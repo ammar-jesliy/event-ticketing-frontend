@@ -26,6 +26,8 @@ import {
 } from '@angular/forms';
 import { CustomerService } from '../../services/customer.service';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-buy-tickets',
@@ -38,9 +40,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
     InputNumberModule,
     ButtonModule,
     ReactiveFormsModule,
+    ToastModule
   ],
   templateUrl: './buy-tickets.component.html',
   styleUrl: './buy-tickets.component.css',
+  providers: [MessageService],
 })
 export class BuyTicketsComponent implements OnInit {
   buyTicketForm!: FormGroup;
@@ -58,7 +62,8 @@ export class BuyTicketsComponent implements OnInit {
     private ticketService: TicketService,
     private ticketpoolService: TicketpoolService,
     private customerService: CustomerService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) {
     this.allEvents = this.eventService.allEvents;
     this.allTickets = this.ticketService.allTickets;
@@ -77,6 +82,14 @@ export class BuyTicketsComponent implements OnInit {
 
     this.buyTicketForm = this.fb.group({
       quantity: ['', Validators.required],
+    });
+  }
+
+  showSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Tickets purchased successfully',
     });
   }
 
@@ -109,8 +122,11 @@ export class BuyTicketsComponent implements OnInit {
       const eventId = this.selectedEvent.id || '';
 
       // Buy tickets
-      this.customerService.buyTickets(eventId, customerId, quantity);
-
+      this.customerService
+        .buyTickets(eventId, customerId, quantity)
+        .subscribe(() => {
+          this.showSuccess();
+        });
       this.displayDialog = false;
       this.buyTicketForm.reset();
     } else {

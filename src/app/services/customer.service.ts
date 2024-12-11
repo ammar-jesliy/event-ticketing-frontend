@@ -106,8 +106,8 @@ export class CustomerService {
    * @param {number} numberOfTickets - The number of tickets to purchase.
    * @returns {void}
    */
-  buyTickets(eventId: string, customerId: string, numberOfTickets: number) {
-    this.http.post(`${this.apiUrl}/buy-tickets`, {
+  buyTickets(eventId: string, customerId: string, numberOfTickets: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/buy-tickets`, {
       eventId,
       customerId,
       numberOfTickets,
