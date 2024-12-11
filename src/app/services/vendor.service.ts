@@ -120,8 +120,8 @@ export class VendorService {
     vendorId: string,
     ticketPrice: number,
     ticketQuantity: number
-  ) {
-    this.http.post(`${this.apiUrl}/release-tickets`, {
+  ): Observable<any> {
+    return this.http.post(`${this.apiUrl}/release-tickets`, {
       eventId: eventId,
       vendorId: vendorId,
       numberOfTickets: ticketQuantity,

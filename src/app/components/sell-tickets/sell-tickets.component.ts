@@ -28,6 +28,8 @@ import { TransactionService } from '../../services/transaction.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Ticket } from '../../util/ticket';
 import { TicketService } from '../../services/ticket.service';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-sell-tickets',
@@ -42,9 +44,11 @@ import { TicketService } from '../../services/ticket.service';
     ReactiveFormsModule,
     DropdownModule,
     TooltipModule,
+    ToastModule,
   ],
   templateUrl: './sell-tickets.component.html',
   styleUrl: './sell-tickets.component.css',
+  providers: [MessageService],
 })
 export class SellTicketsComponent implements OnInit {
   sellTicketsForm!: FormGroup;
@@ -61,7 +65,8 @@ export class SellTicketsComponent implements OnInit {
     private vendorService: VendorService,
     private transactionService: TransactionService,
     private ticketService: TicketService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) {
     this.eventNames = this.eventService.eventNames;
     this.allEvents = this.eventService.allEvents;
@@ -98,6 +103,14 @@ export class SellTicketsComponent implements OnInit {
     this.formVisible = true;
   }
 
+  showSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Tickets released successfully',
+    });
+  }
+
   /**
    * Handles the form submission for selling tickets.
    *
@@ -113,7 +126,7 @@ export class SellTicketsComponent implements OnInit {
    * @returns {void}
    */
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.sellTicketsForm.valid) {
       const { eventName, ticketPrice, ticketQuantity } =
         this.sellTicketsForm.value;
@@ -133,12 +146,11 @@ export class SellTicketsComponent implements OnInit {
       }
 
       // Release the tickets
-      this.vendorService.releaseTicket(
-        eventId,
-        vendorId,
-        ticketPrice,
-        ticketQuantity
-      );
+      this.vendorService
+        .releaseTicket(eventId, vendorId, ticketPrice, ticketQuantity)
+        .subscribe(() => {
+          this.showSuccess();
+        });
 
       this.formVisible = false;
       this.sellTicketsForm.reset();
