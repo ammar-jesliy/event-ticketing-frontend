@@ -1,3 +1,105 @@
 <app-home-template>
-  <p>Profile works!</p>
+  <div class="flex flex-col gap-5 min-w-[500px]">
+    <div class="flex flex-wrap gap-5">
+      <div
+        class="min-w-[350px] w-full lg:w-[30%] h-[190px] rounded-xl bg-white flex items-center gap-3 justify-start border-solid border-[1px] border-gray-300 p-6"
+      >
+        <img
+          src="profile-placeholder.svg"
+          alt=""
+          class="w-24 h-24 object-contain"
+        />
+        <div class="flex flex-col justify-center">
+          <p class="text-2xl font-medium mt-2 mb-0">{{ userDetails.name }}</p>
+          <p class="text-gray-500">{{ userDetails.email }}</p>
+          <p class="text-gray-500">
+            {{ "User since: " + (customerDetails?.dateCreated | date) }}
+          </p>
+        </div>
+      </div>
+      <div
+        class="min-w-[350px] w-full lg:flex-1 h-[190px] rounded-xl bg-white flex flex-col gap-5 border-solid border-[1px] border-gray-300 p-6"
+      >
+        <div class="pb-2 w-full flex items-center justify-between">
+          <div class="flex items-center gap-5 font-semibold">
+            <i class="pi pi-star text-base bg-gray-100 px-1 rounded-md"></i>
+            <p class="font-medium">VIP points</p>
+          </div>
+          <i
+            class="pi pi-info-circle text-xl opacity-50"
+            pTooltip="1 Ticket purchased = 10 VIP points. Tier 1 has 10% discount, Tier 2 has 20% discount, and Tier 3 has 30% discount."
+            tooltipPosition="left"
+          ></i>
+        </div>
+        <div class="flex flex-col flex-1 gap-2">
+          <div class="flex w-full px-10">
+            <div class="relative h-4 w-full bg-gray-200 rounded-full">
+              <div
+                class="absolute h-4 rounded-full bg-blue-500"
+                [style.width]="
+                  getVipPointsPercentage(
+                    customerDetails?.vipPoints ?? 0
+                  ).toFixed(0) + '%'
+                "
+              >
+                <p class="absolute top-[-25px] right-0 translate-x-1/2">
+                  {{ customerDetails?.vipPoints ?? 0 }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between px-5">
+            <div class="flex items-center flex-col justify-center">
+              <p class="text-gray-500 font-medium">
+                {{
+                  (customerDetails?.vipPoints ?? 0) <= 100
+                    ? 0
+                    : (customerDetails?.vipPoints ?? 0) <= 200
+                    ? 100
+                    : (customerDetails?.vipPoints ?? 0) <= 300
+                    ? 200
+                    : 300
+                }}
+              </p>
+              <p class="font-semibold text-lg">
+                {{
+                  (customerDetails?.vipPoints ?? 0) <= 100
+                    ? "Tier 0"
+                    : (customerDetails?.vipPoints ?? 0) <= 200
+                    ? "Tier 1"
+                    : (customerDetails?.vipPoints ?? 0) <= 300
+                    ? "Tier 2"
+                    : "Tier 3"
+                }}
+              </p>
+            </div>
+            <div class="flex items-center flex-col justify-center">
+              <p class="text-gray-500 font-medium">
+                {{
+                  (customerDetails?.vipPoints ?? 0) <= 100
+                    ? 100
+                    : (customerDetails?.vipPoints ?? 0) <= 200
+                    ? 200
+                    : (customerDetails?.vipPoints ?? 0) <= 300
+                    ? 300
+                    : customerDetails?.vipPoints ?? 0
+                }}
+              </p>
+              <p class="font-semibold text-lg">
+                {{
+                  (customerDetails?.vipPoints ?? 0) <= 100
+                    ? "Tier 1"
+                    : (customerDetails?.vipPoints ?? 0) <= 200
+                    ? "Tier 2"
+                    : (customerDetails?.vipPoints ?? 0) <= 300
+                    ? "Tier 3"
+                    : "Max"
+                }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </app-home-template>
