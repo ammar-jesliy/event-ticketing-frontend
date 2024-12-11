@@ -8,6 +8,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Event } from '../util/event';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,7 @@ export class EventService {
    *
    * @returns {void}
    */
-  fetchAllEvents() {
+  fetchAllEvents(): void {
     this.http.get<Event[]>(this.apiUrl).subscribe((events) => {
       this._allEvents.set(events);
       this._eventNames.set(events.map((event) => event.name));
@@ -50,9 +51,7 @@ export class EventService {
    *
    * @param event - The event object to be created.
    */
-  createEvent(event: Event) {
-    this.http.post<Event>(this.apiUrl, event).subscribe(() => {
-      this.fetchAllEvents();
-    });
+  createEvent(event: Event): Observable<any> {
+    return this.http.post<Event>(this.apiUrl, event)
   }
 }

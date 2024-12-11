@@ -25,6 +25,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { Event } from '../../util/event';
 import { EventService } from '../../services/event.service';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-events',
@@ -40,9 +42,11 @@ import { TooltipModule } from 'primeng/tooltip';
     ReactiveFormsModule,
     InputNumberModule,
     TooltipModule,
+    ToastModule,
   ],
   templateUrl: './events.component.html',
   styleUrl: './events.component.css',
+  providers: [MessageService],
 })
 export class EventsComponent implements OnInit {
   allEvents: Signal<Event[] | null>;
@@ -52,7 +56,11 @@ export class EventsComponent implements OnInit {
 
   formVisible: boolean = false;
 
-  constructor(private eventService: EventService, private fb: FormBuilder) {
+  constructor(
+    private eventService: EventService,
+    private fb: FormBuilder,
+    private messageService: MessageService
+  ) {
     this.allEvents = this.eventService.allEvents;
   }
 
@@ -82,6 +90,20 @@ export class EventsComponent implements OnInit {
         '',
         [Validators.required, Validators.min(1), Validators.max(500000)],
       ],
+    });
+  }
+
+  /**
+   * Displays a success message indicating that the event has been created successfully.
+   *
+   * Utilizes the message service to add a message with severity 'success', a summary of 'Success',
+   * and a detailed message of 'Event created successfully'.
+   */
+  showSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Event created successfully',
     });
   }
 
@@ -163,7 +185,7 @@ export class EventsComponent implements OnInit {
    *
    * @returns {void}
    */
-  onSubmit() {
+  onSubmit(): void {
     if (this.createEventForm.valid) {
       const {
         name,
@@ -189,7 +211,10 @@ export class EventsComponent implements OnInit {
         maxCapacity,
       };
 
-      this.eventService.createEvent(newEvent);
+      this.eventService.createEvent(newEvent).subscribe(() => {
+        this.showSuccess();
+        this.eventService.fetchAllEvents();
+      });
     }
 
     this.formVisible = false;
